@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "connect-flash": "^0.1.1",
     "ejs": "^3.1.9",
@@ -8,6 +9,8 @@
     "express-session": "^1.18.0",
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.0",
+    "node": "^21.6.2",
+    "nodemon": "^3.1.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "session": "^0.1.0"
