@@ -1,8 +1,12 @@
 const express = require("express");
 const path = require("path");
-const bcrypt = require("bcrypt");
+//const bcrypt = require("bcrypt");
 const collection = require("./config");
 const session = require('express-session');
+
+const flash = require('connect-flash');
+const bcrypt = require('bcryptjs');
+
 
 
 const app = express();
