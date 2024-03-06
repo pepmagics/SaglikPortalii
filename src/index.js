@@ -3,7 +3,7 @@ const path = require("path");
 const bcrypt = require("bcrypt");
 const collection = require("./config");
 const session = require('express-session');
-const flash = require('connect-flash');
+
 
 const app = express();
 //convert data into json format
