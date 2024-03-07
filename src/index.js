@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const collection = require("./config");
 const session = require('express-session');
-const flash = require('connect-flash');
 const bcrypt = require('bcryptjs');
 
 
@@ -16,6 +15,7 @@ app.use(express.urlencoded({extended: false}));
 app.set('view engine', 'ejs');
 //static file
 
+//helping to use css files
 app.use(express.static("public"));
 
 app.use(session({
@@ -27,11 +27,9 @@ app.use(session({
 
 app.get("/", (req, res) =>{
     res.render("home");
-
 });
 
 app.get("/signup", (req, res) => {
-   
     res.render("signup");
 });
 
