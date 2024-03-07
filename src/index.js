@@ -1,17 +1,10 @@
 const express = require("express");
 const path = require("path");
-//const bcrypt = require("bcrypt");
 const collection = require("./config");
 const session = require('express-session');
-
 const flash = require('connect-flash');
 const bcrypt = require('bcryptjs');
 
-
-//111
-
-//aa
-//bbb
 
 const app = express();
 //convert data into json format
@@ -31,24 +24,24 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.use(flash());
 
 app.get("/", (req, res) =>{
-    const messages = req.flash(); // Declare a variable to store the flash messages
-    res.render("login", { messages });
+    res.render("home");
+
 });
 
 app.get("/signup", (req, res) => {
-    const messages = req.flash(); // Declare a variable to store the flash messages
-    res.render("signup", { messages });
+   
+    res.render("signup");
 });
 
 app.get("/deneme", (req, res) => {
     res.render("deneme");
 });
 
-app.get("/home", (req, res) => {    
-    res.render("home");
+app.get("/login", (req, res) => {   
+    res.render("login");
+
 });
 
 //Register User
