@@ -2,17 +2,27 @@
 <html lang="en">
 
 <head>
-  <title>Sağlık Portalı</title>
+  <title>Bootstrap Example</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/stylee.css">
+  <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <script src="/scriptNavbar.js" defer></script>
+  <link rel="stylesheet" href="/navbar.css">
 
   <style>
-    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-    .row.content {
-      height: 1500px
+    body {
+      background-image: url('/profile-1.jpeg');
+      /* Arka plan resmini belirtme */
+      background-size: cover;
+      /* Resmi sayfanın tamamını kaplayacak şekilde ölçekleme */
+      background-position: center;
+      /* Resmi sayfa ortasına hizalama */
+      background-color: rgba(255, 255, 255, 0.5);
+      /* Opaklık eklemek için rgba kullanma */
     }
 
     .navbar {
@@ -20,17 +30,13 @@
       border-radius: 0;
     }
 
-    /* Set gray background color and 100% height */
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-    }
-
-    /* Set black background color, white text and some padding */
     footer {
+
       background-color: #555;
       color: white;
       padding: 15px;
+      margin-bottom: 0;
+      padding-bottom: 0;
     }
 
     /* On small screens, set height to 'auto' for sidenav and grid */
@@ -44,124 +50,274 @@
         height: auto;
       }
     }
+
+    * {
+      margin: 0px;
+      padding: 0px;
+      box-sizing: border-box;
+    }
   </style>
 </head>
 
 <body>
-
-  <nav class="navbar navbar-inverse">
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Logo</a>
-      </div>
+      <a class="navbar-brand" href="#">Logo2</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="/anasayfa">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Projects</a></li>
-          <li><a href="#">Contact</a></li>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Projects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="/profile/"><span class="glyphicon glyphicon-user"></span> <%= user.name %></a></li>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><span class="glyphicon glyphicon-log-in"></span> Giriş Yap</a>
+          </li>
         </ul>
       </div>
     </div>
-  </nav>
+  </nav> -->
+          <!-- Navbar -->
 
+          <nav class="navbar flex phoneNavbar ">
+            <di class="container-fluid">
+
+            <i class="bx bx-menu" id="sidebar-open"></i>
+           
+            <span class="nav_image">
+              <img src="/profile-1.jpeg" alt="logo_img" />
+            </span>
+        
+          </nav>
+       
   <div class="container-fluid">
-    <div class="row content">
-      <div class="col-sm-2 sidenav">
+    <div class="row">
+      <!-- <div class="col-sm-2">
+        <ul class="nav flex-column nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active" href="/saglik_Testleri">SaglikTestleri</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/deneme">Deneme</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#section3">Family</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#section3">Photos</a>
+          </li>
+        </ul>
+      </div> -->
 
-        <ul class="nav nav-pills nav-stacked mt-3">
-          <li class="active"><a href="/anasayfa">Home</a></li>
-          <li><a href="/deneme">deneme</a></li>
-          <li><a href="#section3">Family</a></li>
-          <li><a href="#section3">Photos</a></li>
-        </ul><br>
-
-      </div>
-
-      <div class="col-sm-10">
-        <h4><small>RECENT POSTS</small></h4>
-        <hr>
-        <h2>I Love Food</h2>
-        <h5><span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.</h5>
-        <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
-        <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-          deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat.</p>
-        <br><br>
-
-        <h4><small>RECENT POSTS</small></h4>
-        <hr>
-        <h2>Officially Blogging</h2>
-        <h5><span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.</h5>
-        <h5><span class="label label-success">Lorem</span></h5><br>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-          enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <hr>
-        <h4>Leave a Comment:</h4>
-        <form role="form">
-          <div class="form-group">
-            <textarea class="form-control" rows="3" required></textarea>
+      <div class="col-sm-2 ">
+        <nav class="sidebar locked">
+          <div class="logo_items flex">
+            <span class="nav_image">
+              <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
+            </span>
+            <span class="logo_name">CodingNepal</span>
+            <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
+            <i class="bx bx-x" id="sidebar-close"></i>
           </div>
-          <button type="submit" class="btn btn-success">Submit</button>
-        </form>
-        <br><br>
-
-        <p><span class="badge">2</span> Comments:</p><br>
-
-        <div class="row">
-          <div class="col-sm-2 text-center">
-            <img src="bandmember.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-          </div>
-          <div class="col-sm-10">
-            <h4>Anja <small>Sep 29, 2015, 9:12 PM</small></h4>
-            <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            <br>
-          </div>
-          <div class="col-sm-2 text-center">
-            <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-          </div>
-          <div class="col-sm-10">
-            <h4>John Row <small>Sep 25, 2015, 8:25 PM</small></h4>
-            <p>I am so happy for you man! Finally. I am looking forward to read about your trendy life. Lorem ipsum
-              dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-              aliqua.</p>
-            <br>
-            <p><span class="badge">1</span> Comment:</p><br>
-            <div class="row">
-              <div class="col-sm-2 text-center">
-                <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-              </div>
-              <div class="col-xs-10">
-                <h4>Nested Bro <small>Sep 25, 2015, 8:28 PM</small></h4>
-                <p>Me too! WOW!</p>
-                <br>
+    
+          <div class="menu_container ">
+            <div class="menu_items">
+              <ul class="menu_item" style="padding:0;">
+                <div class="menu_title flex">
+                  <span class="title">Dashboard</span>
+                  <span class="line"></span>
+                </div>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-home-alt"></i>
+                    <span>Overview</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-grid-alt"></i>
+                    <span>All Projects</span>
+                  </a>
+                </li>
+              </ul>
+    
+              <ul class="menu_item "style="padding:0;">
+            
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bxs-magic-wand"></i>
+                    <span>Magic Build</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-folder"></i>
+                    <span>New Projects</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-cloud-upload"></i>
+                    <span>Upload New</span>
+                  </a>
+                </li>
+              </ul>
+    
+              <ul class="menu_item " style="padding:0;">
+                <div class="menu_title flex">
+                  <span class="title">Setting</span>
+                  <span class="line"></span>
+                </div>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-flag"></i>
+                    <span>Notice Board</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-award"></i>
+                    <span>Award</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-cog"></i>
+                    <span>Setting</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+    
+            <div class="sidebar_profile flex">
+              <span class="nav_image">
+                <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
+              </span>
+              <div class="data_text">
+                <span class="name">David Oliva</span>
+                <span class="email">david@gmail.com</span>
               </div>
             </div>
           </div>
+        </nav>
+    </div>
+      
+      <div class="col-sm-10">
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad vero placeat quas quia eius in, distinctio iusto similique quis magni tempore voluptas facilis ducimus aut dolorem minima nemo. Totam, labore. Sint inventore doloremque nam sapiente
+          necessitatibus odio molestiae fuga recusandae! Eveniet, dolorem. Consectetur eos magni esse at ex. Veritatis doloremque et quasi, nostrum commodi ipsum hic deserunt voluptas fuga earum? Obcaecati vero repellendus laborum itaque est
+          earum id non ea quae? Temporibus minus fugiat totam minima provident eligendi aut qui enim, voluptatem similique asperiores non saepe, aliquam laudantium inventore numquam. Pariatur, ad! Eos, repudiandae! Aliquam veniam beatae commodi
+          impedit perspiciatis incidunt debitis sed ab, molestiae voluptates repellat. Neque eius rerum iusto nisi dicta pariatur, consequatur amet, facere molestiae aliquid similique? Cumque, nesciunt. Aliquid optio sint sunt minima quidem vero
+          ullam nesciunt nemo. Ut ab sed debitis dicta alias fugit veritatis perferendis quae accusamus similique. Soluta quam nostrum eum quos nemo. Rerum id atque rem necessitatibus dicta, veniam amet esse ex consectetur, aliquam at deleniti
+          ipsa. Nostrum mollitia impedit culpa magni iure soluta quod, accusamus aliquid laborum necessitatibus eum, repellendus repudiandae? Aperiam nulla amet iusto aliquid libero perferendis repellat nam laudantium temporibus. Ut obcaecati
+          quo neque perspiciatis, veritatis, earum ducimus a labore quae ullam architecto cumque dolorem, libero necessitatibus quas repudiandae. Dolores doloremque hic accusamus est nihil explicabo temporibus dolorum accusantium, commodi praesentium
+          fugiat odio impedit neque esse facere beatae veniam, consectetur repellat unde repudiandae reprehenderit totam? Nesciunt pariatur sed iusto! Dolorum quisquam id officiis vel eos rem dolor quas in laboriosam magni, quod est officia aspernatur,
+          assumenda reiciendis fuga omnis. Dolorem tempore, officiis numquam exercitationem cum rerum quaerat incidunt id! Rem sed cum, quibusdam illum recusandae provident similique alias, at aspernatur reiciendis ipsum voluptatibus nam commodi
+          doloremque sunt quaerat ab! Repellat, consectetur culpa dolor minus magnam laborum et. Labore, odio!
         </div>
+        
+        <div class="container card_container .html d-flex flex-wrap">
+          <div class="card m-4">
+            <div class="img">
+              <img src="/profile-2.jpeg">
+            </div>
+            <div class="top-text">
+              <div class="name">Annie Lea</div>
+              <p>Apps Developer</p>
+            </div>
+            <div class="bottom-text">
+              <div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem quaerat iusto adipisci reprehenderit quasi cum perspiciatis, minima reiciendis magni quam!</div>
+              <div class="btn">
+                <a href="#">Read more</a>
+              </div>
+            </div>
+          </div>
+          <div class="card m-4">
+            <div class="img">
+              <img src="//profile-1.jpeg">
+            </div>
+            <div class="top-text">
+              <div class="name">Eliana Maia</div>
+              <p>Website Developer</p>
+            </div>
+            <div class="bottom-text">
+              <div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem quaerat iusto adipisci reprehenderit quasi cum perspiciatis, minima reiciendis magni quam!</div>
+              <div class="btn">
+                <a href="#">Read more</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card m-4">
+            <div class="img">
+              <img src="/profile-3.jpeg">
+            </div>
+            <div class="top-text">
+              <div class="name">Harley Briana</div>
+              <p>Graphic Developer</p>
+            </div>
+            <div class="bottom-text">
+              <div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem quaerat iusto adipisci reprehenderit quasi cum perspiciatis, minima reiciendis magni quam!</div>
+              <div class="btn">
+                <a href="#">Read more</a>
+              </div>
+            </div>
+          </div>
+          <div class="card m-4">
+            <div class="img">
+              <img src="/profile-2.jpeg">
+            </div>
+            <div class="top-text">
+              <div class="name">Annie Lea</div>
+              <p>Apps Developer</p>
+            </div>
+            <div class="bottom-text">
+              <div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem quaerat iusto adipisci reprehenderit quasi cum perspiciatis, minima reiciendis magni quam!</div>
+              <div class="btn">
+                <a href="#">Read more</a>
+              </div>
+            </div>
+          </div>
+          <div class="card m-4">
+            <div class="img">
+              <img src="//profile-1.jpeg">
+            </div>
+            <div class="top-text">
+              <div class="name">Eliana Maia</div>
+              <p>Website Developer</p>
+            </div>
+            <div class="bottom-text">
+              <div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem quaerat iusto adipisci reprehenderit quasi cum perspiciatis, minima reiciendis magni quam!</div>
+              <div class="btn">
+                <a href="#">Read more</a>
+              </div>
+            </div>
+          </div>
+    
+          
+        </div>
+        
       </div>
     </div>
   </div>
-
   <footer class="container-fluid">
     <p>Footer Text</p>
   </footer>
 
+  <!-- Bootstrap 5 JS Bundle (Popper.js included) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

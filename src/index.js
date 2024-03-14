@@ -33,17 +33,11 @@ app.get("/anasayfa", async (req, res) => {
     req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
     const user = req.user;
     res.render("anasayfa", { user: user });
-
+});
 
 app.get('/saglik_Testleri', (req, res) => {
     res.render('saglik_Testleri', { imagePath:'./src/apple.jpg' });
   });
-
-  // Express.js ile örnek route
-app.get('/sayfa', function(req, res) {
-    var resminizin_adresi = './src/apple.jpg';
-    res.render('ejs_dosyanizin_adi', { resminizin_adresi: resminizin_adresi });
-});
 
 
 app.get("/", (req, res) =>{
@@ -95,24 +89,6 @@ app.get("/profile", async (req, res) => {
 app.post("/logout", (req, res) => {
     res.cookie('token', "", {httpOnly: true}); // set the token in the cookie
     res.redirect("/");
-});
-
-app.get("/deneme", async (req, res) => {
-
-    const tokenCheck = req.headers.cookie.split('=')[1];
-    if (!tokenCheck) {
-        return res.status(401).json({
-            succeeded: false,
-            error: 'No authorization header provided',
-        });
-    }
-     req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
-    const user = req.user;
-    // console.log(user);
-    // console.log(tokenCheck);
-    // console.log((jwt.verify(tokenCheck, "secret")));
-    
-    res.render("deneme", { user: user });
 });
 
 
@@ -186,4 +162,4 @@ const port = 3000;
 app.listen(port, () => {
 
     console.log(`Serverın çalıştığı port: ${port}`);
-})
+});
