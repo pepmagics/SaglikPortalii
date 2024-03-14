@@ -15,7 +15,7 @@
     <div class="form-container">
         <h2>Kaydol</h2>
 
-        <% if (typeof message !== "undefined" && check) { %>
+        <% if (typeof message !== "undefined" && checkingMessage) { %>
             <div class="alert alert-danger">
                 <%= message %>
             </div>
@@ -27,15 +27,41 @@
         
         <form action="/signup" method="post">
             <div class="form-group">
-                <label for="name">Ad:</label>
-                <input type="text" id="name" name="username" placeholder="Adını gir" required autocomplete="off">
+                <label for="first_name">Ad:</label>
+                <input type="text" id="first_name" name="first_name" placeholder="Adınızı girin" required autocomplete="off">
             </div>
             <div class="form-group">
-                <label for="password">Şifre:</label>
-                <input type="password" name="password" id="password" placeholder="Şifreni gir" required>
+                <label for="last_name">Soyad:</label>
+                <input type="text" id="last_name" name="last_name" placeholder="Soyadınızı girin" required autocomplete="off">
             </div>
-            <button type="submit" class="submit-btn">Kaydol</button>
+            <div class="form-group">
+                <label for="username">Kullanıcı Adı:</label>
+                <input type="text" id="username" name="username" placeholder="Kullanıcı adınızı girin" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="email">E-Posta:</label>
+                <input type="email" id="email" name="email" placeholder="E-posta adresinizi girin" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="phone">Telefon Numarası:</label>
+                <input type="tel" id="phone" name="phone" placeholder="0 538 716 47 10" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" title="Lütfen telefon numaranızı 0___ ___ __ __ şeklinde girin" required autocomplete="off" inputmode="numeric" maxlength="11">
+            </div>
+            <div class="form-group">
+                <label for="birthdate">Doğum Tarihi:</label>
+                <input type="date" id="birthdate" name="birthdate" required>
+            </div>
+            <div class="form-group">
+                <label for="pass">Şifre:</label>
+                <input type="password" id="pass" name="password" minlength="8" required  autocomplete="off"/>
+              </div>
+                <div class="form-group">
+                    <label for="pass">Şifre Tekrar:</label>
+                    <input type="password" id="pass" name="password2" minlength="8" required autocomplete="off" />
+
+            <button type="submit" class="submit-btn ">Kaydol</button>
         </form>
+        <p>Hesabın var mı? <a href="/login">Giriş Yap</a></p>
+
     </div>
 </body>
 </html>

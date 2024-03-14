@@ -1,17 +1,9 @@
 const express = require("express");
 const path = require("path");
-//const bcrypt = require("bcrypt");
 const collection = require("./config");
-const session = require('express-session');
-
-const flash = require('connect-flash');
 const bcrypt = require('bcryptjs');
-
-
-//111
-
-//aa
-//bbb
+const jwt = require("jsonwebtoken");
+const authenticateToken = require("../middlewares/authMiddleware")
 
 const app = express();
 //convert data into json format
@@ -21,17 +13,27 @@ app.use(express.urlencoded({extended: false}));
 
 //use EJS as the view engine
 app.set('view engine', 'ejs');
-//static file
 
+//helping to use css files
 app.use(express.static("public"));
 
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: false
-}));
 
-app.use(flash());
+app.get("/", (req, res) => {
+    res.render("home");
+});
+
+app.get("/anasayfa", async (req, res) => {
+    const tokenCheck = req.headers.cookie.split('=')[1];
+    if (!tokenCheck) {
+        return res.status(401).json({
+            succeeded: false,
+            error: 'No authorization header provided',
+        });
+    }
+    req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
+    const user = req.user;
+    res.render("anasayfa", { user: user });
+
 
 app.get('/saglik_Testleri', (req, res) => {
     res.render('saglik_Testleri', { imagePath:'./src/apple.jpg' });
@@ -47,20 +49,72 @@ app.get('/sayfa', function(req, res) {
 app.get("/", (req, res) =>{
     const messages = req.flash(); // Declare a variable to store the flash messages
     res.render("login", { messages });
+
+
 });
 
 app.get("/signup", (req, res) => {
-    const messages = req.flash(); // Declare a variable to store the flash messages
-    res.render("signup", { messages });
+    res.render("signup");
 });
 
-app.get("/deneme", (req, res) => {
-    res.render("deneme");
+app.get("/login", (req, res) => {   
+    res.render("login");
+
 });
 
-app.get("/home", (req, res) => {    
-    res.render("home");
+app.get("/profile/editProfile", async (req, res) => {
+
+    const tokenCheck = req.headers.cookie.split('=')[1];
+    if (!tokenCheck) {
+        return res.status(401).json({
+            succeeded: false,
+            error: 'No authorization header provided',
+        });
+    }
+    req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
+    const user = req.user;   
+    res.render("editProfile", { user: user });
+
 });
+
+app.get("/profile", async (req, res) => { 
+
+    const tokenCheck = req.headers.cookie.split('=')[1];
+    if (!tokenCheck) {
+        return res.status(401).json({
+            succeeded: false,
+            error: 'No authorization header provided',
+        });
+    }
+    req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
+    const user = req.user;
+    res.render("profile", { user: user });
+
+});
+
+app.post("/logout", (req, res) => {
+    res.cookie('token', "", {httpOnly: true}); // set the token in the cookie
+    res.redirect("/");
+});
+
+app.get("/deneme", async (req, res) => {
+
+    const tokenCheck = req.headers.cookie.split('=')[1];
+    if (!tokenCheck) {
+        return res.status(401).json({
+            succeeded: false,
+            error: 'No authorization header provided',
+        });
+    }
+     req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
+    const user = req.user;
+    // console.log(user);
+    // console.log(tokenCheck);
+    // console.log((jwt.verify(tokenCheck, "secret")));
+    
+    res.render("deneme", { user: user });
+});
+
 
 //Register User
 app.post("/signup", async (req, res) => {
@@ -76,7 +130,7 @@ app.post("/signup", async (req, res) => {
     if(existingUser) {
         res.render("signup", {
             message: "Kullanıcı zaten kayıtlı. Lütfen farklı bir kullanıcı adı seçin.",
-            check: true
+            checkingMessage: true
         });
     }
     else{
@@ -89,7 +143,7 @@ app.post("/signup", async (req, res) => {
         console.log(userdata);
         res.render("signup", {
             message: "Kullanıcı başarıyla kaydedildi",
-            check: false
+            checkingMessage: false
         });
     }
 })
@@ -107,7 +161,12 @@ app.post("/login", async (req, res) => {
             //compare the hash password from database with the plain text
         const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
         if(isPasswordMatch){
-            res.render("home", { username: req.body.username });
+
+            const token = jwt.sign({ _id: check._id}, "secret");
+            res.cookie('token', token, {httpOnly: true}); // set the token in the cookie
+            console.log(req.headers.cookie.split('=')[1]); // get the token from the cookie
+           
+            res.redirect("/anasayfa");
         }
         else{
             res.render("login", {
@@ -120,6 +179,7 @@ app.post("/login", async (req, res) => {
         res.send("wrong details");
     }
 });
+   
 
 const port = 3000;
 
