@@ -34,6 +34,23 @@ app.get("/anasayfa", async (req, res) => {
     const user = req.user;
     res.render("anasayfa", { user: user });
 
+
+app.get('/saglik_Testleri', (req, res) => {
+    res.render('saglik_Testleri', { imagePath:'./src/apple.jpg' });
+  });
+
+  // Express.js ile örnek route
+app.get('/sayfa', function(req, res) {
+    var resminizin_adresi = './src/apple.jpg';
+    res.render('ejs_dosyanizin_adi', { resminizin_adresi: resminizin_adresi });
+});
+
+
+app.get("/", (req, res) =>{
+    const messages = req.flash(); // Declare a variable to store the flash messages
+    res.render("login", { messages });
+
+
 });
 
 app.get("/signup", (req, res) => {
