@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/profile.css">
+</head>
+<body>
+    <div class="container">
+        <div class="profile-info">
+            <h2>Profil</h2>
+            <p>Bu alanda profil bilgileriniz bulunmaktadır.</p>
+        </div>
+        <div class="profile-details">
+            <div class="form-group">
+                <label for="username">Kullanıcı Adı:</label>
+                <span id="username"><%= user.name %></span>
+            </div>
+            <div class="form-group">
+                <label for="email">E-posta:</label>
+                <span id="email"><%= user.name  %></span>
+            </div>
+            <!-- Diğer profil detayları buraya eklenebilir -->
+        </div>
+        <div class="profile-actions">
+            <form action="/profile/editProfile" method="GET">
+                <button type="submit">Profili Düzenle</button>
+            </form>
+            <form action="/logout" method="POST">
+                <button type="submit">Çıkış Yap</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -11,7 +11,6 @@ connect.then(() => {
 // Create a schema
 
 const LoginSchema = new mongoose.Schema({
-    
     name: {
         type: String,
         required: true
@@ -20,7 +19,6 @@ const LoginSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-
 });
 
 const collection = new mongoose.model("users", LoginSchema); //model
