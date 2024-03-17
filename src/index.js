@@ -32,7 +32,7 @@ app.get("/anasayfa", async (req, res) => {
     }
     req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
     const user = req.user;
-    res.render("anasayfa", { user: user });
+    res.render("anasayfa", { user: user});
 });
 
 app.get('/saglik_Testleri', (req, res) => {
@@ -141,7 +141,7 @@ app.post("/signup", async (req, res) => {
 //Login user
 app.post("/login", async (req, res) => {
     try{
-        const check = await collection.findOne({name: req.body.username});
+        const check = await collection.findOne({username: req.body.username});
         if (!check) {
             res.render("login", {
                 message: "Kullanıcı adı bulunamadı"
