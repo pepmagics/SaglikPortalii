@@ -96,12 +96,17 @@ app.post("/logout", (req, res) => {
 app.post("/signup", async (req, res) => {
 
     const data = {
-        name: req.body.username,
+        name: req.body.first_name,
+        surname: req.body.last_name,
+        username: req.body.username,
+        email: req.body.email,
+        telno: req.body.phone,
+        birthDate: req.body.birthdate,
         password: req.body.password
     }
 
     //check if the user already exists in the database
-    const existingUser = await collection.findOne({name: data.name});
+    const existingUser = await collection.findOne({username: data.username});
 
     if(existingUser) {
         res.render("signup", {
@@ -110,10 +115,18 @@ app.post("/signup", async (req, res) => {
         });
     }
     else{
+        
+        const passwordMatch = req.body.password === req.body.password2;
+        if(!passwordMatch){
+            res.render("signup", {
+                message: "Şifreler eşleşmiyor",
+                checkingMessage: true
+            });
+        }
+        else{
         //hash the password using bcrypt
         const saltRounds = 10; //Number of salt round for bcrypt
         const hashedPassword = await bcrypt.hash(data.password, saltRounds);
-
         data.password = hashedPassword; //Replace the hash password with original password
         const userdata = await collection.insertMany(data);
         console.log(userdata);
@@ -121,6 +134,7 @@ app.post("/signup", async (req, res) => {
             message: "Kullanıcı başarıyla kaydedildi",
             checkingMessage: false
         });
+    }
     }
 })
 
