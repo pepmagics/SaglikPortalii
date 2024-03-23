@@ -3,6 +3,7 @@ const path = require("path");
 const collection = require("./config");
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser");
 const authenticateToken = require("../middlewares/authMiddleware")
 
 const app = express();
@@ -10,6 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //use EJS as the view engine
 app.set('view engine', 'ejs');
@@ -20,6 +22,10 @@ app.use(express.static("public"));
 
 app.get("/", (req, res) => {
     res.render("home");
+});
+
+app.get("/indeks", (req, res) => {
+    res.render("indeks", {bmi: ""});
 });
 
 app.get("/anasayfa", async (req, res) => {
@@ -83,7 +89,6 @@ app.get("/profile", async (req, res) => {
     req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
     const user = req.user;
     res.render("profile", { user: user });
-
 });
 
 app.post("/logout", (req, res) => {
@@ -91,6 +96,16 @@ app.post("/logout", (req, res) => {
     res.redirect("/");
 });
 
+app.post("/indeks", async (req, res) => {
+    
+    var w = parseFloat(req.body.w);
+    var h = parseFloat(req.body.h);
+    let result = (w / (h * h)) * 10000;
+    const bmi = await result.toFixed(2); 
+    console.log(bmi);
+    res.render("indeks", {bmi: bmi});   
+
+});
 
 //Register User
 app.post("/signup", async (req, res) => {

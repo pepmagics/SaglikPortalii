@@ -89,7 +89,7 @@ body {
 .menu_title {
   position: relative;
   height: 50px;
-  width: 55px;
+  width: auto;
 }
 .menu_title .title {
   margin-left: 15px;

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Sağlık Portalı</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/stylee.css">
+  <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <script src="/scriptNavbar.js" defer></script>
+  <link rel="stylesheet" href="/navbar.css">
+
+  <style>
+    body {
+      
+      background-position: center;
+      /* Resmi sayfa ortasına hizalama */
+      background-color: rgba(255, 255, 255, 0.5);
+      /* Opaklık eklemek için rgba kullanma */
+    }
+
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    footer {
+
+      background-color: #555;
+      color: white;
+      padding: 15px;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    @media screen and (min-width: 800px) {
+      body{
+        margin-left: 88px;
+        margin-right: 20px;
+        
+      }
+    }
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 800px) {
+      body{
+        margin-top: 15px;
+        margin-right: 20px;
+        margin-left: 20px;
+
+      }
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      
+      .row.content {
+        height: auto;
+      }
+    }
+
+    * {
+      margin: 0px;
+      padding: 0px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Logo2</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Projects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><span class="glyphicon glyphicon-log-in"></span> Giriş Yap</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav> -->
+          <!-- Navbar -->
+
+          <nav class="navbar flex phoneNavbar ">
+            <di class="container-fluid">
+
+            <i class="bx bx-menu" id="sidebar-open"></i>
+           
+            <span class="nav_image">
+              <img src="/profile-1.jpeg" alt="logo_img" />
+            </span>
+        
+          </nav>
+       
+  <div class="container-fluid">
+    <div class="row" style="z-index: 0;">
+      <!-- <div class="col-sm-2">
+        <ul class="nav flex-column nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active" href="/saglik_Testleri">SaglikTestleri</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/deneme">Deneme</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#section3">Family</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#section3">Photos</a>
+          </li>
+        </ul>
+      </div> -->
+
+      <div class="col-sm-2 ">
+        <nav class="sidebar locked">
+          <div class="logo_items flex">
+            <span class="nav_image">
+              <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
+            </span>
+            <span class="logo_name">SağlıkPortalı</span>
+            <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
+            <i class="bx bx-x" id="sidebar-close"></i>
+          </div>
+    
+          <div class="menu_container ">
+            <div class="menu_items">
+              <ul class="menu_item" style="padding:0;">
+                <div class="menu_title flex">
+                  <span class="title">Dashboard</span>
+                  <span class="line"></span>
+                </div>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-home-alt"></i>
+                    <span>Anasayfa</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-grid-alt"></i>
+                    <span>A</span>
+                  </a>
+                </li>
+              </ul>
+    
+              <ul class="menu_item "style="padding:0;">
+            
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bxs-magic-wand"></i>
+                    <span>Magic Build</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-folder"></i>
+                    <span>New Projects</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-cloud-upload"></i>
+                    <span>Upload New</span>
+                  </a>
+                </li>
+              </ul>
+              <ul class="menu_item " style="padding:0;">
+                <div class="menu_title flex">
+                  <div class="title">Testler</div>
+                  <span class="line"></span>
+                </div>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-flag"></i>
+                    <span>Akciğer Testi</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-award"></i>
+                    <span>Kalp Krizi Testi</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="/indeks" class="link flex">
+                    <i class="bx bx-cog"></i>
+                    <span>Vücut Kitle İndeksi</span>
+                  </a>
+                </li>
+              <ul class="menu_item " style="padding:0;">
+                <div class="menu_title flex">
+                  <span class="title">Setting</span>
+                  <span class="line"></span>
+                </div>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-flag"></i>
+                    <span>Notice Board</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-award"></i>
+                    <span>Award</span>
+                  </a>
+                </li>
+                <li class="item">
+                  <a href="#" class="link flex">
+                    <i class="bx bx-cog"></i>
+                    <span>Setting</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+    </div>
+      
+    <div class="container mt-5">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-5 col-sm-5 col-xs-2">
+          <div class="border p-4"> <!-- Kutu başlangıcı -->
+            <div class="text-center">
+              <h1>Vücut Kitle İndeksi(BMI)</h1>
+              <form action="/indeks" method="post">
+                <div>
+                  <input type="number" inputmode="numeric" name="w" class="form-control mb-2" placeholder=" Kilon (kg)" required>
+                  <input type="number" inputmode="numeric" name="h" class="form-control mb-2" placeholder="Boyun (cm)" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Hesapla</button>
+              </form>
+              <% if (bmi < 16 && bmi>0) { %>
+                <div class="alert alert-light mt-3" role="alert" style="z-index: -1;">
+                <h2><%= bmi %></h2>
+                BMI'ın <strong>16</strong>'dan daha düşük. Şiddetli derecede zayıfsın.
+                </div>
+              <% } else if (bmi >= 16 && bmi < 17) { %>
+                <div class="alert alert-info mt-3" role="alert" style="z-index: -1;">
+                <h2><%= bmi %></h2>
+                BMI'ın <strong>16</strong> ile <strong>17</strong> arasında. Orta derecede zayıfsın.
+                </div>
+              <% } else if (bmi >= 17 && bmi < 18.5) { %>
+                <div class="alert alert-primary mt-3" role="alert" style="z-index: -1;">
+                <h2><%= bmi %></h2>
+                BMI'ın <strong>17</strong> ile <strong>18.5</strong> arasında. Hafif derecede zayıfsın.
+                </div>
+              <% } else if (bmi >= 18.5 && bmi < 25) { %>
+                <div class="alert alert-success mt-3" role="alert" style="z-index: -1;">
+                <h2><%= bmi %></h2>
+                BMI'ın <strong>18.5</strong> ile <strong>25</strong> arasında. Normal kilodasın.
+                </div>
+              <% } else if (bmi >= 25 && bmi < 30) { %>
+                <div class="alert alert-warning mt-3" role="alert" style="z-index: -1;">
+                <h2><%= bmi %></h2>
+                BMI'ın <strong>25</strong> ile <strong>30</strong> arasında. Fazla kilolusun.
+                </div>
+              <% } else if (bmi >= 30 && bmi < 35) { %>
+                <div class="alert alert-danger mt-3" role="alert" style="z-index: -1;">
+                <h2><%= bmi %></h2>
+                BMI'ın <strong>30</strong> ile <strong>35</strong> arasında. Obezitesin (Sınıf I).
+                </div>
+              <% } else if (bmi >= 35 && bmi < 40) { %>
+                <div class="alert alert-secondary mt-3" role="alert" style="z-index: -1;">
+                <h2><%= bmi %></h2>
+                BMI'ın <strong>35</strong> ile <strong>40</strong> arasında. Obezitesin (Sınıf II).
+                </div>
+              <% } else if (bmi >= 40) { %>
+                <div class="alert alert-dark mt-3" role="alert" style="z-index: -1;">
+                <h2><%= bmi %></h2>
+                BMI'ın <strong>40</strong>'dan daha yüksek. Obezitesin (Sınıf III).
+                </div>
+              <% } %>
+            </div>
+          </div> <!-- Kutu sonu -->
+          
+        </div>
+        <div class="mt-3">
+          <h2 class="mt-3">Vücut Kitle İndeksi Nedir?</h2>
+          <p class="mt-3 mb-3">Vücut Kitle İndeksi (BMI), bir kişinin boyu ve kilosu arasındaki ilişkiyi değerlendirerek, sağlık durumunu belirlemede kullanılan bir ölçümdür. BMI, kişinin vücut ağırlığını boy uzunluğunun karesine bölerek elde edilir. Bu hesaplama, bir kişinin vücut kitle yoğunluğunu nicelendirmeyi amaçlar. Genel olarak, bir kişinin boyuna göre sağlıklı bir vücut ağırlığına sahip olup olmadığını belirlemek için kullanılır. BMI hesaplamasından elde edilen değer, kişinin hangi aralıkta olduğunu belirlemek için kullanılır; bu aralıklar, kişinin zayıf, normal kilolu, fazla kilolu veya obez olup olmadığını belirtir.</p>
+
+            <div class="align-items-center row justify-content-center" style="margin-top: 30px;">
+            <ul class="list-group col-md-5 col-sm-5 col-xs-2 d-flex justify-content-center text-center" style="z-index: -10; position: relative;">
+              
+              <li class="list-group-item">Yetişkinler için BMI tablosu</li>
+              <li class="list-group-item list-group-item-light">Şiddetli Derecede Zayıflık < 16 </li>
+              <li class="list-group-item list-group-item-info">Orta Derecede Zayıflık 16 - 17</li>
+              <li class="list-group-item list-group-item-primary">Hafif Zayıflık 17 - 18.5</li>
+              <li class="list-group-item list-group-item-success">Normal 18.5 - 25</li>
+              <li class="list-group-item list-group-item-warning">Fazla Kilolu 25 - 30</li>
+              <li class="list-group-item list-group-item-danger">Obez Sınıf I 30 - 35</li>
+              <li class="list-group-item list-group-item-secondary">Obez Sınıf II 35 - 40</li>
+              <li class="list-group-item list-group-item-dark">Obez Sınıf III > 40</li>
+            </ul>
+
+            </div>
+            <div class="mt-3">
+              <p>Bu tabloda yetişkinler için Vücut Kitle İndeksi (BMI) aralıkları ve bu aralıklara karşılık gelen kategoriler gösterilmektedir. Bu, Dünya Sağlık Örgütü'nün (WHO) yetişkinler için BMI değerlerine göre önerdiği vücut ağırlığıdır. 20 yaş ve üzeri erkekler ve kadınlar için kullanılır.</p>
+            </div>
+
+            <div class="mt-3">
+              <h2>İdeal Vücut Kitle İndeksi Nedir?</h2>
+              <p class="mt-3 mb-3">İdeal vücut kitle indeksi, genel olarak 18.5 ile 24.9 arasında olmalıdır. Bu aralık, sağlıklı bir vücut ağırlığını ve vücut yağını belirtir. Bu aralıkta olmak, bir kişinin genel sağlığını korumak ve sağlıklı bir yaşam sürdürmek için en iyi yoldur. Ancak, herkesin vücut yapısı farklıdır ve bu nedenle ideal BMI aralığı kişiden kişiye değişebilir. Bu nedenle, ideal BMI aralığını belirlemek için bir doktora danışmak en iyisidir.</p>
+            </div>
+
+            <div class="mt-3">
+              <h2>Fazla Kilolu Olmanın Riskleri</h2>
+              <p class="mt-3 mb-3">Fazla kilolu olmanın bir dizi ciddi hastalık ve sağlık sorunu riskini artırır. Aşağıda, Amerika Hastalık Kontrol ve Önleme Merkezleri (CDC) tarafından belirtilen bu risklerin bir listesi bulunmaktadır:</p>
+              <ul>
+                <li>Yüksek tansiyon</li>
+                <li>LDL kolesterol seviyelerinin yükselmesi, geniş çapta "kötü kolesterol" olarak kabul edilen, HDL kolesterol seviyelerinin düşmesi, ılımlı olması durumunda iyi kolesterol olarak kabul edilen ve trigliserid seviyelerinin yükselmesi</li>
+                <li>Tip II diyabet</li>
+                <li>Koroner kalp hastalığı</li>
+                <li>İnme</li>
+                <li>Safra kesesi hastalığı</li>
+                <li>Eklemlerde kıkırdak bozulmasına neden olan, bir tür eklem hastalığı olan osteoartrit</li>
+                <li>Uyku apnesi ve solunum problemleri</li>
+                <li>Belirli kanser türleri (endometriyal, meme, kolon, böbrek, safra kesesi, karaciğer)</li>
+                <li>Düşük yaşam kalitesi</li>
+                <li>Klinik depresyon, anksiyete ve diğer ruhsal hastalıklar</li>
+                <li>Vücut ağrıları ve belirli fiziksel fonksiyonlarda zorluklar</li>
+                <li>Genel olarak, sağlıklı bir BMI'ye sahip olanlara göre ölüm riskinde artış</li>
+              </ul>
+              <p class="mt-3 mb-3">Yukarıdaki listeden de görülebileceği gibi, kilo fazlalığının birçok olumsuz, bazı durumlarda ölümcül sonuçları olabilir. Genel olarak, bir kişinin BMI'nin 25 kg/m2'nin altında olması gerekir, ancak daha sağlıklı olup olmadıklarını belirlemek için doktorlarına danışmaları en iyisidir.</p>
+            </div>
+
+            <div class="mt-3">
+              <h2>Zayıf Olmanın Riskleri</h2>
+              <p class="mt-3 mb-3">Zayıf olmanın kendi başına ilişkilendirilmiş riskleri vardır, bunlar aşağıda listelenmiştir:</p>
+              <ul>
+                <li>Malnütrisyon, vitamin eksiklikleri, anemi (kan damarlarını taşıma yeteneğinin azalması)</li>
+                <li>Kemik zayıflığına neden olan osteoporoz, bir kemik kırılma riskini artırır</li>
+                <li>Bağışıklık fonksiyonunun azalması</li>
+                <li>Büyüme ve gelişme sorunları, özellikle çocuklar ve gençlerde</li>
+                <li>Hormonal dengesizlikler nedeniyle kadınlarda muhtemel üreme sorunları. Zayıf olan kadın
+                  özellikle hormonal dengesizlikler nedeniyle kadınlarda adet döngüsünü bozabilecekleri gibi ilk üç ayda düşük yapma riski de artabilir.</li>
+              </ul>
+              <p class="mt-3 mb-3">Bazı durumlarda, zayıf olmak, altta yatan bir durum veya hastalığın belirtisi olabilir, bu da anoreksiya nervoza gibi kendi riskleri olan durumları içerir. Zayıf olduğunuzu düşünüyorsanız veya tanıdığınız biri zayıfsa, özellikle zayıf olma nedeni açık değilse doktorunuza danışın.</p>
+            </div>
+
+            <div class="mt-3">
+              <h2>BMI'nın Sınırlılıkları</h2>
+              <p class="mt-3 mb-3">BMI, sağlıklı vücut ağırlığının genel bir göstergesi olarak yaygın bir şekilde kullanılmasına rağmen, sınırlılıkları vardır. BMI, vücut kompozisyonunu hesaba katamayan bir tahmin olduğundan dolayıdır. Kas, kemik kütlesi ve yağ gibi bir dizi faktörün etkisi altında olduğu için, BMI bir kişinin sağlıklı vücut ağırlığını belirlemek için tek başına kullanılmamalıdır. Yetişkinlerde:</p>
+              <ul>
+                <li>BMI, tamamen vücut yağının fazlalığını ölçtüğü için tam olarak doğru olamaz. BMI ayrıca yaş, cinsiyet, etnik köken, kas kütlesi, vücut yağı ve aktivite seviyesi gibi faktörlerden etkilenir. Örneğin, yaşlı bir kişi, sağlıklı olarak kabul edilen bir ağırlığa sahip olmasına rağmen, günlük hayatında tamamen hareketsiz olabilir ve bu kişi kilolu olmasa bile önemli miktarda vücut yağına sahip olabilir. Bu durum sağlıksız olarak değerlendirilebilirken, aynı BMI'ye sahip daha genç bir kişi, daha yüksek kas kompozisyonu nedeniyle sağlıklı olarak kabul edilir. Atletlerde, özellikle vücut yapılarının ağırlığından daha ağır olduğu için aşırı kilolu kabul edilen vücut geliştiricilerde, aslında vücut kompozisyonlarına göre sağlıklı olmaları oldukça mümkündür. Genel olarak, CDC'ye göre:</li>
+                <li>Yaşlı yetişkinler, aynı BMI'ye sahip genç yetişkinlere göre daha fazla vücut yağına sahiptir.</li>
+                <li>Kadınlar, eşit bir BMI için erkeklerden daha fazla vücut yağına sahiptir.</li>
+                <li>Kaslı bireyler ve yüksek derecede eğitimli sporcular, büyük kas kütlesi nedeniyle daha yüksek BMI'ye sahip olabilir.</li>
+              </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Bootstrap 5 JS Bundle (Popper.js included) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
