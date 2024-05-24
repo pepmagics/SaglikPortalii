@@ -2,114 +2,132 @@ const express = require("express");
 const path = require("path");
 const collection = require("./config");
 const bcrypt = require('bcryptjs');
-const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
-const authenticateToken = require("../middlewares/authMiddleware")
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
 
 const app = express();
-//convert data into json format
+// Convert data into json format
 app.use(express.json());
-
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//use EJS as the view engine
+// Use EJS as the view engine
 app.set('view engine', 'ejs');
 
-//helping to use css files
+// Helping to use css files
 app.use(express.static("public"));
 
+// Configure session middleware
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+}));
 
+// Initialize Passport.js
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Passport.js Local Strategy
+passport.use(new LocalStrategy(async (username, password, done) => {
+    try {
+        const user = await collection.findOne({ username: username });
+        if (!user) {
+            return done(null, false, { message: 'Incorrect username.' });
+        }
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatch) {
+            return done(null, false, { message: 'Incorrect password.' });
+        }
+        return done(null, user);
+    } catch (err) {
+        return done(err);
+    }
+}));
+
+passport.serializeUser((user, done) => {
+    done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await collection.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err, null);
+    }
+});
+
+// Middleware to check if user is authenticated
+app.use((req, res, next) => {
+    res.locals.user = req.isAuthenticated() ? req.user : null;
+    next();
+});
+
+// Routes
 app.get("/", (req, res) => {
     res.render("home");
 });
 
 app.get("/indeks", (req, res) => {
-    res.render("indeks", {bmi: ""});
+    res.render("indeks", { bmi: "" });
 });
 
-app.get("/anasayfa", async (req, res) => {
-    const tokenCheck = req.headers.cookie.split('=')[1];
-    if (!tokenCheck) {
-        return res.status(401).json({
-            succeeded: false,
-            error: 'No authorization header provided',
-        });
+app.get("/anasayfa", (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
     }
-    req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
-    const user = req.user;
-    res.render("anasayfa", { user: user});
+    res.render("anasayfa", { user: req.user });
 });
 
 app.get('/saglik_Testleri', (req, res) => {
-    res.render('saglik_Testleri', { imagePath:'./src/apple.jpg' });
-  });
+    res.render('saglik_Testleri', { imagePath: './src/apple.jpg' });
+});
 
-
-app.get("/", (req, res) =>{
-    const messages = req.flash(); // Declare a variable to store the flash messages
-    res.render("login", { messages });
-
-
+app.get("/login", (req, res) => {
+    res.render("login");
 });
 
 app.get("/signup", (req, res) => {
     res.render("signup");
 });
 
-app.get("/login", (req, res) => {   
-    res.render("login");
-
+app.get("/profile/editProfile", (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
+    res.render("editProfile", { user: req.user });
 });
 
-app.get("/profile/editProfile", async (req, res) => {
-
-    const tokenCheck = req.headers.cookie.split('=')[1];
-    if (!tokenCheck) {
-        return res.status(401).json({
-            succeeded: false,
-            error: 'No authorization header provided',
-        });
+app.get("/profile", (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
     }
-    req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
-    const user = req.user;   
-    res.render("editProfile", { user: user });
-
-});
-
-app.get("/profile", async (req, res) => { 
-
-    const tokenCheck = req.headers.cookie.split('=')[1];
-    if (!tokenCheck) {
-        return res.status(401).json({
-            succeeded: false,
-            error: 'No authorization header provided',
-        });
-    }
-    req.user = await collection.findById((jwt.verify(tokenCheck, "secret"))._id);
-    const user = req.user;
-    res.render("profile", { user: user });
+    res.render("profile", { user: req.user });
 });
 
 app.post("/logout", (req, res) => {
-    res.cookie('token', "", {httpOnly: true}); // set the token in the cookie
-    res.redirect("/");
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/');
+    });
 });
 
 app.post("/indeks", async (req, res) => {
-    
     var w = parseFloat(req.body.w);
     var h = parseFloat(req.body.h);
     let result = (w / (h * h)) * 10000;
-    const bmi = await result.toFixed(2); 
+    const bmi = await result.toFixed(2);
     console.log(bmi);
-    res.render("indeks", {bmi: bmi});   
-
+    res.render("indeks", { bmi: bmi });
 });
 
-//Register User
+// Register User
 app.post("/signup", async (req, res) => {
-
     const data = {
         name: req.body.first_name,
         surname: req.body.last_name,
@@ -118,77 +136,105 @@ app.post("/signup", async (req, res) => {
         telno: req.body.phone,
         birthDate: req.body.birthdate,
         password: req.body.password
-    }
+    };
 
-    //check if the user already exists in the database
-    const existingUser = await collection.findOne({username: data.username});
+    const existingUser = await collection.findOne({ username: data.username });
 
-    if(existingUser) {
+    if (existingUser) {
         res.render("signup", {
             message: "Kullanıcı zaten kayıtlı. Lütfen farklı bir kullanıcı adı seçin.",
             checkingMessage: true
         });
-    }
-    else{
-        
+    } else {
         const passwordMatch = req.body.password === req.body.password2;
-        if(!passwordMatch){
+        if (!passwordMatch) {
             res.render("signup", {
                 message: "Şifreler eşleşmiyor",
                 checkingMessage: true
             });
-        }
-        else{
-        //hash the password using bcrypt
-        const saltRounds = 10; //Number of salt round for bcrypt
-        const hashedPassword = await bcrypt.hash(data.password, saltRounds);
-        data.password = hashedPassword; //Replace the hash password with original password
-        const userdata = await collection.insertMany(data);
-        console.log(userdata);
-        res.render("signup", {
-            message: "Kullanıcı başarıyla kaydedildi",
-            checkingMessage: false
-        });
-    }
-    }
-})
-
-//Login user
-app.post("/login", async (req, res) => {
-    try{
-        const check = await collection.findOne({username: req.body.username});
-        if (!check) {
-            res.render("login", {
-                message: "Kullanıcı adı bulunamadı"
+        } else {
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+            data.password = hashedPassword;
+            const userdata = await collection.insertMany(data);
+            console.log(userdata);
+            res.render("signup", {
+                message: "Kullanıcı başarıyla kaydedildi",
+                checkingMessage: false
             });
         }
-        else{
-            //compare the hash password from database with the plain text
-        const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
-        if(isPasswordMatch){
-
-            const token = jwt.sign({ _id: check._id}, "secret");
-            res.cookie('token', token, {httpOnly: true}); // set the token in the cookie
-            console.log(req.headers.cookie.split('=')[1]); // get the token from the cookie
-           
-            res.redirect("/anasayfa");
-        }
-        else{
-            res.render("login", {
-                message: "Yanlış şifre"
-            });
-        }
-        }
-        
-    }catch{
-        res.send("wrong details");
     }
 });
-   
+
+// Login User
+app.post("/login", passport.authenticate('local', {
+    successRedirect: '/anasayfa',
+    failureRedirect: '/login',
+    failureFlash: true
+}));
+
+// Python scriptini çalıştıran fonksiyon
+const runPythonScript = (rangeInput) => {
+    return new Promise((resolve, reject) => {
+        const pythonProcess = exec(`python3 ./src/index.py ${rangeInput}`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error executing Python script: ${error}`);
+                reject(error);
+            } else {
+                console.log(`Python script executed successfully. Output: ${stdout}`);
+                resolve(stdout);
+            }
+        });
+    });
+};
+
+// POST isteği için bir endpoint tanımla
+app.post("/akciger-kanseri-testi", async (req, res) => {
+    try {
+        const rangeInput1 = req.body.rangeInput1;
+        console.log(rangeInput1);
+        const rangeInput2 = req.body.rangeInput2;
+        const rangeInput3 = req.body.rangeInput3;
+        const rangeInput4 = req.body.rangeInput4;
+        const rangeInput5 = req.body.rangeInput5;
+        const rangeInput6 = req.body.rangeInput6;
+        const rangeInput7 = req.body.rangeInput7;
+        const rangeInput8 = req.body.rangeInput8;
+        const rangeInput9 = req.body.rangeInput9;
+        const rangeInput10 = req.body.rangeInput10;
+        const rangeInput11 = req.body.rangeInput11;
+        const rangeInput12 = req.body.rangeInput12;
+        const rangeInput13 = req.body.rangeInput13;
+        const rangeInput14 = req.body.rangeInput14;
+        const rangeInput15 = req.body.rangeInput15;
+        const rangeInput16 = req.body.rangeInput16;
+        const rangeInput17 = req.body.rangeInput17;
+        const rangeInput18 = req.body.rangeInput18;
+        const rangeInput19 = req.body.rangeInput19;
+        const rangeInput20 = req.body.rangeInput20;
+        const rangeInput21 = req.body.rangeInput21;
+        const rangeInput22 = req.body.rangeInput22;
+        const rangeInput23 = req.body.rangeInput23;
+
+        const rangeInput = `${rangeInput1} ${rangeInput2} ${rangeInput3} ${rangeInput4} ${rangeInput5} ${rangeInput6} ${rangeInput7} ${rangeInput8} ${rangeInput9} ${rangeInput10} ${rangeInput11} ${rangeInput12} ${rangeInput13} ${rangeInput14} ${rangeInput15} ${rangeInput16} ${rangeInput17} ${rangeInput18} ${rangeInput19} ${rangeInput20} ${rangeInput21} ${rangeInput22} ${rangeInput23}`;
+        console.log('User input:', rangeInput);
+
+        const output = await runPythonScript(rangeInput);
+        console.log('Output:', output);
+
+        res.render('akciger-kanseri-testi', { output: output });
+    } catch (error) {
+        console.error('Error running Python script:', error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+app.get('/akciger-kanseri-testi', async (req, res) => {
+    res.render('akciger-kanseri-testi', { output: '' });
+});
 
 const port = 3000;
 
 app.listen(port, () => {
-
     console.log(`Serverın çalıştığı port: ${port}`);
 });
