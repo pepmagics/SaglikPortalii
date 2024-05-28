@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
+const { exec } = require('child_process');
 
 const app = express();
 // Convert data into json format
@@ -168,10 +169,121 @@ app.post("/signup", async (req, res) => {
 
 // Login User
 app.post("/login", passport.authenticate('local', {
-    successRedirect: '/anasayfa',
+    successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
 }));
+
+
+app.post("/kalp-krizi-test", async (req, res) => {
+    try {
+        const {
+            age,
+            gender,
+            diabetes,
+            familyHistory,
+            smoking,
+            obesity,
+            alcoholConsumption,
+            exerciseHoursPerWeek,
+            diet,
+            previousHeartProblems,
+            medicationUse,
+            stressLevel,
+            sedentaryHoursPerDay,
+            bmi,
+            physicalActivityDaysPerWeek,
+            sleepHoursPerDay
+        } = req.body;
+
+        const inputs = [
+            age, gender, diabetes, familyHistory, smoking, obesity,
+            alcoholConsumption, exerciseHoursPerWeek, diet, previousHeartProblems,
+            medicationUse, stressLevel, sedentaryHoursPerDay, bmi,
+            physicalActivityDaysPerWeek, sleepHoursPerDay
+        ];
+
+        const rangeInputHeart = inputs.map(input => input === undefined ? "0" : input).join(" ");
+        console.log('User input:', rangeInputHeart);
+
+        const output = await runPythonScriptHeart(rangeInputHeart);
+        console.log('Output:', output);
+
+        const cleanOutput = parseInt(output.replace("{", "").replace("}", "").trim());
+        res.render('kalp-krizi-test', { output: cleanOutput });
+    } catch (error) {
+        console.error('Error running Python script:', error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+const runPythonScriptHeart = (rangeInputHeart) => {
+    return new Promise((resolve, reject) => {
+        const pythonProcessHeart = exec(`python3 ./src/heart-attack.py ${rangeInputHeart}`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error executing Python script: ${error}`);
+                reject(error);
+            } else {
+                console.log(`Python script executed successfully. Output: ${stdout}`);
+                resolve(stdout);
+            }
+        });
+    });
+};
+
+app.get('/kalp-krizi-test', async (req, res) => {
+    res.render('kalp-krizi-test', { output: '' });
+}
+);
+
+app.post("/akciger-kanseri-testi", async (req, res) => {
+    try {
+        const {
+            age,
+            gender,
+            airPollution,
+            alcoholUse,
+            dustAllergy,
+            occupationalHazards,
+            geneticRisk,
+            chronicLungDisease,
+            obesity,
+            smokingLevel,
+            passiveSmoking,
+            chestPain,
+            bloodyCough,
+            fatigue,
+            weightLoss,
+            shortnessOfBreath,
+            wheezing,
+            difficultySwallowing,
+            clubbing,
+            frequentColds,
+            dryCough,
+            snoring
+        } = req.body;
+
+        const inputs = [
+            age, gender, airPollution, alcoholUse, dustAllergy,
+            occupationalHazards, geneticRisk, chronicLungDisease, obesity,
+            smokingLevel, passiveSmoking, chestPain, bloodyCough, fatigue,
+            weightLoss, shortnessOfBreath, wheezing, difficultySwallowing,
+            clubbing, frequentColds, dryCough, snoring
+        ];
+
+        const rangeInput = inputs.map(input => input === undefined ? "0" : input).join(" ");
+        console.log('User input:', rangeInput);
+
+        const output = await runPythonScript(rangeInput);
+        console.log('Output:', output);
+
+        const cleanOutput = parseInt(output.replace("[", "").replace("]", "").trim());
+        res.render('akciger-kanseri-testi', { output: cleanOutput });
+    } catch (error) {
+        console.error('Error running Python script:', error);
+        res.status(500).send('An error occurred');
+    }
+});
 
 // Python scriptini çalıştıran fonksiyon
 const runPythonScript = (rangeInput) => {
@@ -187,47 +299,6 @@ const runPythonScript = (rangeInput) => {
         });
     });
 };
-
-// POST isteği için bir endpoint tanımla
-app.post("/akciger-kanseri-testi", async (req, res) => {
-    try {
-        const rangeInput1 = req.body.rangeInput1;
-        console.log(rangeInput1);
-        const rangeInput2 = req.body.rangeInput2;
-        const rangeInput3 = req.body.rangeInput3;
-        const rangeInput4 = req.body.rangeInput4;
-        const rangeInput5 = req.body.rangeInput5;
-        const rangeInput6 = req.body.rangeInput6;
-        const rangeInput7 = req.body.rangeInput7;
-        const rangeInput8 = req.body.rangeInput8;
-        const rangeInput9 = req.body.rangeInput9;
-        const rangeInput10 = req.body.rangeInput10;
-        const rangeInput11 = req.body.rangeInput11;
-        const rangeInput12 = req.body.rangeInput12;
-        const rangeInput13 = req.body.rangeInput13;
-        const rangeInput14 = req.body.rangeInput14;
-        const rangeInput15 = req.body.rangeInput15;
-        const rangeInput16 = req.body.rangeInput16;
-        const rangeInput17 = req.body.rangeInput17;
-        const rangeInput18 = req.body.rangeInput18;
-        const rangeInput19 = req.body.rangeInput19;
-        const rangeInput20 = req.body.rangeInput20;
-        const rangeInput21 = req.body.rangeInput21;
-        const rangeInput22 = req.body.rangeInput22;
-        const rangeInput23 = req.body.rangeInput23;
-
-        const rangeInput = `${rangeInput1} ${rangeInput2} ${rangeInput3} ${rangeInput4} ${rangeInput5} ${rangeInput6} ${rangeInput7} ${rangeInput8} ${rangeInput9} ${rangeInput10} ${rangeInput11} ${rangeInput12} ${rangeInput13} ${rangeInput14} ${rangeInput15} ${rangeInput16} ${rangeInput17} ${rangeInput18} ${rangeInput19} ${rangeInput20} ${rangeInput21} ${rangeInput22} ${rangeInput23}`;
-        console.log('User input:', rangeInput);
-
-        const output = await runPythonScript(rangeInput);
-        console.log('Output:', output);
-
-        res.render('akciger-kanseri-testi', { output: output });
-    } catch (error) {
-        console.error('Error running Python script:', error);
-        res.status(500).send('An error occurred');
-    }
-});
 
 app.get('/akciger-kanseri-testi', async (req, res) => {
     res.render('akciger-kanseri-testi', { output: '' });

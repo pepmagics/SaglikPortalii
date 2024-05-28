@@ -12,13 +12,12 @@
   <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <script src="/scriptNavbar.js" defer></script>
   <link rel="stylesheet" href="/navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <style>
     body {
       background-position: center;
-      /* Resmi sayfa ortasına hizalama */
       background-color: rgba(255, 255, 255, 0.5);
-      /* Opaklık eklemek için rgba kullanma */
     }
 
     .navbar {
@@ -27,33 +26,32 @@
     }
 
     footer {
-
       background-color: #555;
       color: white;
       padding: 15px;
       margin-bottom: 0;
       padding-bottom: 0;
     }
+
     @media screen and (min-width: 800px) {
-      body{
+      body {
         margin-left: 88px;
         margin-right: 20px;
-        
       }
     }
-    /* On small screens, set height to 'auto' for sidenav and grid */
+
     @media screen and (max-width: 800px) {
-      body{
+      body {
         margin-top: 15px;
         margin-right: 20px;
         margin-left: 20px;
-
       }
+
       .sidenav {
         height: auto;
         padding: 15px;
       }
-      
+
       .row.content {
         height: auto;
       }
@@ -67,374 +65,194 @@
 
     .range-value {
       display: inline-block;
-      width: 30px; /* Sayı alanının genişliği */
-      text-align: center; /* Sayıyı ortalar */
-      margin-left: 10px; /* Sayıyı aralık girişinden biraz uzaklaştırır */
+      width: 30px;
+      text-align: center;
+      margin-left: 10px;
     }
   </style>
 </head>
 
 <body>
-  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar flex phoneNavbar ">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Logo2</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Projects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/"><span class="glyphicon glyphicon-log-in"></span> Giriş Yap</a>
-          </li>
-        </ul>
-      </div>
     </div>
-  </nav> -->
-          <!-- Navbar -->
+  </nav>
 
-          <nav class="navbar flex phoneNavbar ">
-            <di class="container-fluid">
-
-            <!-- <i class="bx bx-menu" id="sidebar-open"></i> -->
-           
-            <!-- <span class="nav_image">
-              <img src="/profile-1.jpeg" alt="logo_img" />
-            </span>
-         -->
-          </nav>
-       
   <div class="container-fluid">
     <div class="row" style="z-index: 0;">
-      <!-- <div class="col-sm-2">
-        <ul class="nav flex-column nav-pills">
-          <li class="nav-item">
-            <a class="nav-link active" href="/saglik_Testleri">SaglikTestleri</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/deneme">Deneme</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#section3">Family</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#section3">Photos</a>
-          </li>
-        </ul>
-      </div> -->
+      <%- include('partial/sidebar') %>
 
-      <div class="col-sm-2 ">
-        <nav class="sidebar locked">
-          <div class="logo_items flex">
-            <!-- <span class="nav_image">
-              <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
-            </span> -->
-            <span class="logo_name">SağlıkPortalı</span>
-            <!-- <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
-            <i class="bx bx-x" id="sidebar-close"></i> -->
-          </div>
-    
-          <div class="menu_container">
-            <div class="menu_items">
-              <ul class="menu_item" style="padding:0;">
-                <div class="menu_title flex">
-                  <span class="title">Dashboard</span>
-                  <span class="line"></span>
+      <div class="container mt-5">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-5 col-sm-5 col-xs-2">
+            <div class="container mt-5">
+              <% if (output === 1) { %>
+                <div class="alert alert-light mt-3" role="alert" style="z-index: -1;">
+                  <h2>Düşük</h2>
                 </div>
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bx-home-alt"></i>
-                    <span>Anasayfa</span>
-                  </a>
-                </li>
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bx-grid-alt"></i>
-                    <span>A</span>
-                  </a>
-                </li>
-              </ul>
-    
-              <ul class="menu_item "style="padding:0;">
-            
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bxs-magic-wand"></i>
-                    <span>Magic Build</span>
-                  </a>
-                </li>
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bx-folder"></i>
-                    <span>New Projects</span>
-                  </a>
-                </li>
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bx-cloud-upload"></i>
-                    <span>Upload New</span>
-                  </a>
-                </li>
-              </ul>
-              <ul class="menu_item " style="padding:0;">
-                <div class="menu_title flex">
-                  <div class="title">Testler</div>
-                  <span class="line"></span>
+              <% } else if (output === 2) { %>
+                <div class="alert alert-info mt-3" role="alert" style="z-index: -1;">
+                  <h2>Orta</h2>
                 </div>
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bx-flag"></i>
-                    <span>Akciğer Testi</span>
-                  </a>
-                </li>
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bx-award"></i>
-                    <span>Kalp Krizi Testi</span>
-                  </a>
-                </li>
-                <li class="item">
-                  <a href="/indeks" class="link flex">
-                    <i class="bx bx-cog"></i>
-                    <span>Vücut Kitle İndeksi</span>
-                  </a>
-                </li>
-              <ul class="menu_item " style="padding:0;">
-                <div class="menu_title flex">
-                  <span class="title">Setting</span>
-                  <span class="line"></span>
+              <% } else if (output === 3) { %>
+                <div class="alert alert-danger mt-3" role="alert" style="z-index: -1;">
+                  <h2>Yüksek</h2>
                 </div>
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bx-flag"></i>
-                    <span>Notice Board</span>
-                  </a>
-                </li>
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bx-award"></i>
-                    <span>Award</span>
-                  </a>
-                </li>
-                <li class="item">
-                  <a href="#" class="link flex">
-                    <i class="bx bx-cog"></i>
-                    <span>Setting</span>
-                  </a>
-                </li>
-              </ul>
+              <% } %>
+              <h3 class="text-center">Akciğer Kanseri Testi</h3>
+              <form action="/akciger-kanseri-testi" method="post">
+                <div class="mb-3">
+                  <label for="age" class="form-label">Yaşınız:</label>
+                  <input type="range" class="form-range" name="age" id="age" min="0" max="100" value="50">
+                  <span class="range-value">50</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="gender" class="form-label">Cinsiyet Seçimi:</label>
+                  <input type="range" class="form-range" name="gender" id="gender" min="1" max="2" value="1">
+                  <span id="genderLabel" class="range-value">Erkek</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="airPollution" class="form-label">Hava kirliliğine maruz kalma dereceniz:</label>
+                  <input type="range" class="form-range" name="airPollution" id="airPollution" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="alcoholUse" class="form-label">Alkol Kullanımı:</label>
+                  <input type="range" class="form-range" name="alcoholUse" id="alcoholUse" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="dustAllergy" class="form-label">Toz alerjisi seviyesi:</label>
+                  <input type="range" class="form-range" name="dustAllergy" id="dustAllergy" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="occupationalHazards" class="form-label">Mesleki tehlikelere maruz kalma riski:</label>
+                  <input type="range" class="form-range" name="occupationalHazards" id="occupationalHazards" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="geneticRisk" class="form-label">Genetik Risk:</label>
+                  <input type="range" class="form-range" name="geneticRisk" id="geneticRisk" min="0" max="6" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="chronicLungDisease" class="form-label">Kronik Akciğer Hastalığı:</label>
+                  <input type="range" class="form-range" name="chronicLungDisease" id="chronicLungDisease" min="0" max="6" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="obesity" class="form-label">Obezite düzeyi:</label>
+                  <input type="range" class="form-range" name="obesity" id="obesity" min="0" max="6" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="smokingLevel" class="form-label">Sigara içme seviyesi:</label>
+                  <input type="range" class="form-range" name="smokingLevel" id="smokingLevel" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="passiveSmoking" class="form-label">Pasif içicilik seviyeniz:</label>
+                  <input type="range" class="form-range" name="passiveSmoking" id="passiveSmoking" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="chestPain" class="form-label">Göğüs ağrısı seviyeniz:</label>
+                  <input type="range" class="form-range" name="chestPain" id="chestPain" min="0" max="8" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="bloodyCough" class="form-label">Kanlı öksürük seviyeniz:</label>
+                  <input type="range" class="form-range" name="bloodyCough" id="bloodyCough" min="0" max="8" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="fatigue" class="form-label">Yorgunluk seviyeniz:</label>
+                  <input type="range" class="form-range" name="fatigue" id="fatigue" min="0" max="8" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="weightLoss" class="form-label">Kilo kaybı seviyeniz:</label>
+                  <input type="range" class="form-range" name="weightLoss" id="weightLoss" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="shortnessOfBreath" class="form-label">Nefes darlığı düzeyiniz:</label>
+                  <input type="range" class="form-range" name="shortnessOfBreath" id="shortnessOfBreath" min="0" max="8" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="wheezing" class="form-label">Nefes alırken çıkarılan hırıltı düzeyiniz:</label>
+                  <input type="range" class="form-range" name="wheezing" id="wheezing" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="difficultySwallowing" class="form-label">Yutma güçlüğü düzeyiniz:</label>
+                  <input type="range" class="form-range" name="difficultySwallowing" id="difficultySwallowing" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="clubbing" class="form-label">El tırnaklarının çomaklaşma düzeyi:</label>
+                  <input type="range" class="form-range" name="clubbing" id="clubbing" min="0" max="8" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="frequentColds" class="form-label">Soğuk algınlığı sıklık düzeyi:</label>
+                  <input type="range" class="form-range" name="frequentColds" id="frequentColds" min="0" max="6" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="dryCough" class="form-label">Kuru Öksürük seviyeniz:</label>
+                  <input type="range" class="form-range" name="dryCough" id="dryCough" min="0" max="6" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <div class="mb-3">
+                  <label for="snoring" class="form-label">Horlama seviyeniz:</label>
+                  <input type="range" class="form-range" name="snoring" id="snoring" min="0" max="6" value="0">
+                  <span class="range-value">0</span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Gönder</button>
+              </form>
             </div>
           </div>
-        </nav>
-    </div>
-      
-    <div class="container mt-5">
-      <div class="row justify-content-center align-items-center">
-        <div class="col-md-5 col-sm-5 col-xs-2">
-
-          <div class="container mt-5">
-            <% 
-    // Çıktıdaki "[" ve "]" karakterlerini kaldırarak temizleme işlemi yapalım
-    const cleanOutput = output.replace("[", "").replace("]", "");
-    
-    if (cleanOutput === 1) { %>
-        <div class="alert alert-light mt-3" role="alert" style="z-index: -1;">
-            <h2>Düşük</h2>
-        </div>
-    <% } else if (cleanOutput === 2) { %>
-        <div class="alert alert-info mt-3" role="alert" style="z-index: -1;">
-            <h2>Orta</h2>
-        </div>
-    <% } else if (cleanOutput === 3) { %>
-        <div class="alert alert-danger mt-3" role="alert" style="z-index: -1;">
-            <h2>Yüksek</h2>
-        </div>
-    <% } %>
-    <%= output %>
-    
-            <h3 class="text-center" >Akciğer Kanseri Testi</h3>
-            <form action="/akciger-kanseri-testi" method="post">
-            
-              <div class="mb-3">
-                <label for="rangeInput1" class="form-label">Yaşınız:</label>
-                <input type="range" class="form-range" name="rangeInput1" id="rangeInput1" min="0" max="100" value="50">
-                <span class="range-value">50</span>
-              </div>
-              
-              <div class="mb-3">
-                <label for="rangeInput2" class="form-label">Cinsiyet Seçimi:</label>
-                <input type="range" class="form-range" name="rangeInput2" id="rangeInput2" min="1" max="2" value="1">
-                <span id="genderLabel" class="range-value">Erkek</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput3" class="form-label">Hava kirliliğine maruz kalma dereceniz:</label>
-                <input type="range" class="form-range" name="rangeInput3" id="rangeInput3" min="1" max="8" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput4" class="form-label">Alkol Kullanımı:</label>
-                <input type="range" class="form-range" name="rangeInput4" id="rangeInput4" min="1" max="8" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput5" class="form-label">Toz alerjisi seviyesi:</label>
-                <input type="range" class="form-range" name="rangeInput5" id="rangeInput5" min="1" max="8" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput6" class="form-label">Mesleki tehlikelere maruz kalma riski:</label>
-                <input type="range" class="form-range" name="rangeInput6" id="rangeInput6" min="1" max="8" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput6" class="form-label">Genetik Risk:</label>
-                <input type="range" class="form-range" name="rangeInput7" id="rangeInput7" min="1" max="7" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput8" class="form-label">Kronik Akciğer Hastalığı:</label>
-                <input type="range" class="form-range" name="rangeInput8" id="rangeInput8" min="1" max="7" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput9" class="form-label">Dengeli beslenme düzeyi:</label>
-                <input type="range" class="form-range" name="rangeInput9" id="rangeInput9" min="1" max="7" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput10" class="form-label">Obezite düzeyi:</label>
-                <input type="range" class="form-range" name="rangeInput10" id="rangeInput10" min="1" max="7" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput11" class="form-label">Sigara içme seviyesi:</label>
-                <input type="range" class="form-range" name="rangeInput11" id="rangeInput11" min="1" max="8" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput12" class="form-label">Pasif içicilik seviyeniz:</label>
-                <input type="range" class="form-range" name="rangeInput12" id="rangeInput12" min="1" max="8" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput13" class="form-label">Göğüs ağrısı seviyeniz:</label>
-                <input type="range" class="form-range" name="rangeInput13" id="rangeInput13" min="1" max="9" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput14" class="form-label">Kanlı öksürük seviyeniz:</label>
-                <input type="range" class="form-range" name="rangeInput14" id="rangeInput14" min="1" max="9" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput15" class="form-label">Yorgunluk seviyeniz:</label>
-                <input type="range" class="form-range" name="rangeInput15" id="rangeInput15" min="1" max="9" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput16" class="form-label">Kilo kaybı seviyeniz:</label>
-                <input type="range" class="form-range" name="rangeInput16" id="rangeInput16" min="1" max="8" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput17" class="form-label">Nefes darlığı düzeyiniz:</label>
-                <input type="range" class="form-range" name="rangeInput17" id="rangeInput17" min="1" max="9" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput18" class="form-label">Nefes alırken çıkarılan hırıltı düzeyiniz:</label>
-                <input type="range" class="form-range" name="rangeInput18" id="rangeInput18" min="1" max="8" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput19" class="form-label">Yutma güçlüğü düzeyiniz:</label>
-                <input type="range" class="form-range" name="rangeInput19" id="rangeInput19" min="1" max="8" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput20" class="form-label">El tırnaklarının çomaklaşma düzeyi:</label>
-                <input type="range" class="form-range" name="rangeInput20" id="rangeInput20" min="1" max="9" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput21" class="form-label">Soğuk algınlığı sıklık düzeyi:</label>
-                <input type="range" class="form-range" name="rangeInput21" id="rangeInput21" min="1" max="7" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput22" class="form-label">Kuru Öksürük seviyeniz:</label>
-                <input type="range" class="form-range" name="rangeInput22" id="rangeInput22" min="1" max="7" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <div class="mb-3">
-                <label for="rangeInput23" class="form-label">Horlama seviyeniz:</label>
-                <input type="range" class="form-range" name="rangeInput23" id="rangeInput23" min="1" max="7" value="1">
-                <span class="range-value">1</span>
-              </div>
-
-              <button type="submit" class="btn btn-primary">Gönder</button>
-            </form>
-          </div>
-          
-    
         </div>
       </div>
-    </div>
 
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+      <script>
+        document.querySelectorAll('.form-range').forEach(function(input) {
+          input.addEventListener('input', function() {
+            this.nextElementSibling.textContent = this.value;
+          });
+        });
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Her aralık girişi için işlevi uygulayın
-  document.querySelectorAll('.form-range').forEach(function(input) {
-    // Aralık girişi değeri değiştiğinde çalışacak işlev
-    input.addEventListener('input', function() {
-      // Değer alanını güncelle
-      this.nextElementSibling.textContent = this.value;
-    });
-  });
-
-  document.getElementById('rangeInput2').addEventListener('input', function() {
-    // Cinsiyeti belirle
-    var gender = (this.value === '1') ? 'Erkek' : 'Kadın';
-    // Cinsiyeti gösteren alanı güncelle
-    document.getElementById('genderLabel').textContent = gender;
-  });
-
-  </script>
+        document.getElementById('gender').addEventListener('input', function() {
+          var gender = (this.value === '1') ? 'Erkek' : 'Kadın';
+          document.getElementById('genderLabel').textContent = gender;
+        });
+      </script>
 </body>
 
 </html>

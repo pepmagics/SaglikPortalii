@@ -12,6 +12,7 @@
   <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <script src="/scriptNavbar.js" defer></script>
   <link rel="stylesheet" href="/navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <style>
     
@@ -66,95 +67,7 @@
 
   <div class="row">
   
-    <div class="col-sm-1 ">
-      <nav class="sidebar locked">
-        <div class="logo_items flex">
-          <span class="nav_image">
-            <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
-          </span>
-          <span class="logo_name">SağlıkPortalı</span>
-          <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
-          <i class="bx bx-x" id="sidebar-close"></i>
-        </div>
-  
-        <div class="menu_container ">
-          <div class="menu_items">
-            <ul class="menu_item" style="padding:0;">
-              
-              <li class="item">
-                <a href="/" class="link flex">
-                  <i class="bx bx-home-alt"></i>
-                  <span>Anasayfa</span>
-                </a>
-              </li>
-              <li class="item">
-                <a href="#" class="link flex">
-                  <i class="bx bx-grid-alt"></i>
-                  <span>All Projects</span>
-                </a>
-              </li>
-            </ul>
-  
-            <ul class="menu_item " style="padding:0;">
-  
-              <li class="item">
-                <a href="#" class="link flex">
-                  <i class="bx bxs-magic-wand"></i>
-                  <span>Magic Build</span>
-                </a>
-              </li>
-              <li class="item">
-                <a href="#" class="link flex">
-                  <i class="bx bx-folder"></i>
-                  <span>New Projects</span>
-                </a>
-              </li>
-              <li class="item">
-                <a href="#" class="link flex">
-                  <i class="bx bx-cloud-upload"></i>
-                  <span>Upload New</span>
-                </a>
-              </li>
-            </ul>
-  
-            <ul class="menu_item " style="padding:0;">
-              <div class="menu_title flex">
-                <span class="title">Giriş Yap</span>
-                <span class="line"></span>
-              </div>
-              <li class="item">
-                <a href="#" class="link flex">
-                  <i class="bx bx-flag"></i>
-                  <span>Notice Board</span>
-                </a>
-              </li>
-              <li class="item">
-                <a href="#" class="link flex">
-                  <i class="bx bx-award"></i>
-                  <span>Award</span>
-                </a>
-              </li>
-              <li class="item">
-                <a href="/login" class="link flex">
-                  <i class="bx bx-cog"></i>
-                  <span>Giriş Yap</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-  
-          <div class="sidebar_profile flex">
-            <span class="nav_image">
-              <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
-            </span>
-            <div class="data_text">
-              <span class="name">David Oliva</span>
-              <span class="email">david@gmail.com</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </div>
+    <%- include('partial/sidebar') %>
   
     <div class="col-sm-11">
       <div>

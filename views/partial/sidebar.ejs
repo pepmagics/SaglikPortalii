@@ -1,0 +1,109 @@
+<div class="col-sm-1 ">
+    <nav class="sidebar locked">
+        <div class="logo_items flex">
+            <span class="nav_image">
+                <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
+            </span>
+            <span class="logo_name">SağlıkPortalı</span>
+            <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
+            <i class="bx bx-x" id="sidebar-close"></i>
+        </div>
+
+        <div class="menu_container ">
+            <div class="menu_items">
+                <ul class="menu_item" style="padding:0;">
+                    <li class="item">
+                        <a href="/" class="link flex">
+                            <i class="bx bx-home-alt"></i>
+                            <span>Anasayfa</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="#" class="link flex">
+                            <i class="bx bx-grid-alt"></i>
+                            <span>All Projects</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="menu_item " style="padding:0;">
+                    <li class="item">
+                        <a href="#" class="link flex">
+                            <i class="bx bxs-magic-wand"></i>
+                            <span>Magic Build</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="#" class="link flex">
+                            <i class="bx bx-folder"></i>
+                            <span>New Projects</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="#" class="link flex">
+                            <i class="bx bx-cloud-upload"></i>
+                            <span>Upload New</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="menu_item " style="padding:0;">
+                    <div class="menu_title flex">
+                        <div class="title">Testler</div>
+                        <span class="line"></span>
+                    </div>
+                    <li class="item">
+                        <a href="/akciger-kanseri-testi" class="link flex">
+                            <i class="fa-solid fa-lungs"></i>
+                            <span>Akciğer Kanseri Testi</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="/kalp-krizi-test" class="link flex">
+                            <i class="bx bxs-heart"></i>
+                            <span>Kalp Krizi Testi</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="/indeks" class="link flex">
+                            <i class="bx bx-body"></i>
+                            <span>Vücut Kitle İndeksi</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <% if (!user) { %>
+                    <ul class="menu_item " style="padding:0;">
+                        <div class="menu_title flex">
+                            <span class="title">Giriş Yap</span>
+                            <span class="line"></span>
+                        </div>
+                        <li class="item">
+                            <a href="/login" class="link flex">
+                                <i class="bx bx-cog"></i>
+                                <span>Giriş Yap</span>
+                            </a>
+                        </li>
+                        <li class="item">
+                            <a href="/signup" class="link flex">
+                                <i class="bx bx-cog"></i>
+                                <span>Kaydol</span>
+                            </a>
+                        </li>
+                    </ul>
+                <% } %>
+            </div>
+
+            <% if (user) { %>
+                <div class="sidebar_profile flex">
+                    <span class="nav_image">
+                        <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
+                    </span>
+                    <div class="data_text">
+                        <span class="name"><%= user.name %> <%= user.surname %></span>
+                        <span class="email"><%= user.email %></span>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </nav>
+</div>

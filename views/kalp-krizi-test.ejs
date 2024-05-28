@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Sağlık Portalı</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/stylee.css">
+  <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <script src="/scriptNavbar.js" defer></script>
+  <link rel="stylesheet" href="/navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    body {
+      background-position: center;
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    @media screen and (min-width: 800px) {
+      body {
+        margin-left: 88px;
+        margin-right: 20px;
+      }
+    }
+
+    @media screen and (max-width: 800px) {
+      body {
+        margin-top: 15px;
+        margin-right: 20px;
+        margin-left: 20px;
+      }
+
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+
+      .row.content {
+        height: auto;
+      }
+    }
+
+    * {
+      margin: 0px;
+      padding: 0px;
+      box-sizing: border-box;
+    }
+
+    .range-value {
+      display: inline-block;
+      width: 30px;
+      text-align: center;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar flex phoneNavbar ">
+    <div class="container-fluid">
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row" style="z-index: 0;">
+      <%- include('partial/sidebar') %>
+
+      <div class="container mt-5">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-5 col-sm-5 col-xs-2">
+            <div class="container mt-5">
+              <% if (output === 0) { %>
+                <div class="alert alert-light mt-3" role="alert" style="z-index: -1;">
+                  <h2>Düşük</h2>
+                </div>
+              <% } else if (output === 1) { %>
+                <div class="alert alert-danger mt-3" role="alert" style="z-index: -1;">
+                  <h2>Yüksek</h2>
+                </div>
+              <% } %>
+              <h3 class="text-center">Kalp Krizi Testi</h3>
+<form action="/kalp-krizi-test" method="post">
+    <div class="mb-3">
+        <label for="age" class="form-label">Yaşınız:</label>
+        <input type="range" class="form-range" name="age" id="age" min="25" max="90" value="40">
+        <span class="range-value">50</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="gender" class="form-label">Cinsiyet Seçimi:</label>
+        <input type="range" class="form-range" name="gender" id="gender" min="0" max="1" value="0">
+        <span id="genderLabel" class="range-value">Erkek</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="diabetes" class="form-label">Diabetes:</label>
+        <input type="range" class="form-range" name="diabetes" id="diabetes" min="0" max="1" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="familyHistory" class="form-label">Aile Geçmişi:</label>
+        <input type="range" class="form-range" name="familyHistory" id="familyHistory" min="0" max="1" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="smoking" class="form-label">Sigara Kullanımı:</label>
+        <input type="range" class="form-range" name="smoking" id="smoking" min="0" max="1" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="obesity" class="form-label">Obezite:</label>
+        <input type="range" class="form-range" name="obesity" id="obesity" min="0" max="1" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="alcoholConsumption" class="form-label">Alkol Tüketimi:</label>
+        <input type="range" class="form-range" name="alcoholConsumption" id="alcoholConsumption" min="0" max="1" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="exerciseHoursPerWeek" class="form-label">Haftalık Egzersiz Saati:</label>
+        <input type="range" class="form-range" name="exerciseHoursPerWeek" id="exerciseHoursPerWeek" min="0" max="20" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+      <label for="diet" class="form-label">Diyet:</label>
+      <input type="range" class="form-range" name="diet" id="diet" min="0" max="2" value="1">
+      <span id="dietLabel" class="range-value">Average</span>
+  </div>
+
+    <div class="mb-3">
+        <label for="previousHeartProblems" class="form-label">Önceki Kalp Problemleri:</label>
+        <input type="range" class="form-range" name="previousHeartProblems" id="previousHeartProblems" min="0" max="1" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="medicationUse" class="form-label">İlaç Kullanımı:</label>
+        <input type="range" class="form-range" name="medicationUse" id="medicationUse" min="0" max="1" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="stressLevel" class="form-label">Stres Seviyesi:</label>
+        <input type="range" class="form-range" name="stressLevel" id="stressLevel" min="0" max="9" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="sedentaryHoursPerDay" class="form-label">Günlük Hareketsiz Saat:</label>
+        <input type="range" class="form-range" name="sedentaryHoursPerDay" id="sedentaryHoursPerDay" min="0" max="12" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="bmi" class="form-label">BMI:</label>
+        <input type="range" class="form-range" name="bmi" id="bmi" min="10" max="50" value="25">
+        <span class="range-value">25</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="physicalActivityDaysPerWeek" class="form-label">Haftalık Fiziksel Aktivite Gün Sayısı:</label>
+        <input type="range" class="form-range" name="physicalActivityDaysPerWeek" id="physicalActivityDaysPerWeek" min="0" max="7" value="0">
+        <span class="range-value">0</span>
+    </div>
+
+    <div class="mb-3">
+        <label for="sleepHoursPerDay" class="form-label">Günlük Uyku Saati:</label>
+        <input type="range" class="form-range" name="sleepHoursPerDay" id="sleepHoursPerDay" min="4" max="10" value="8">
+        <span class="range-value">8</span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Tahmin Et</button>
+</form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+      <script>
+        document.querySelectorAll('.form-range').forEach(function(input) {
+          input.addEventListener('input', function() {
+            this.nextElementSibling.textContent = this.value;
+          });
+        });
+
+        document.getElementById('gender').addEventListener('input', function() {
+          var gender = (this.value === '0') ? 'Erkek' : 'Kadın';
+          document.getElementById('genderLabel').textContent = gender;
+        });
+
+        document.getElementById('diet').addEventListener('input', function() {
+    var diet;
+    switch (this.value) {
+        case '0':
+            diet = 'Unhealthy';
+            break;
+        case '1':
+            diet = 'Average';
+            break;
+        case '2':
+            diet = 'Healthy';
+            break;
+    }
+    document.getElementById('dietLabel').textContent = diet;
+});
+      </script>
+</body>
+
+</html>

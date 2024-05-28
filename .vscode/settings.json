@@ -1,5 +1,8 @@
 {
 
-    "liveServer.settings.port": 5500
-
+    "liveServer.settings.port": 5500,
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 13,
+    "files.autoSave": "afterDelay",
 }
