@@ -187,7 +187,7 @@ const exercises = [
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnesschemas.nl/images/v2/lateral%20raise.gif',
         kategori: 'omuz',
-        tur: 'other'
+        tur: 'pull'
       },
       {
         name: 'Incline Lateral/Trap Raise',
@@ -201,14 +201,14 @@ const exercises = [
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/oefeningen2/DBLyingRearLateralRaise.gif',
         kategori: 'omuz',
-        tur: 'other'
+        tur: 'pull'
       },
       {
         name: 'Dumbbell Seated Rear Lateral Raise',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBSeatedRearLateralRaise.gif',
         kategori: 'omuz',
-        tur: 'other'
+        tur: 'pull'
       },
       {
         name: 'Standing Dumbbell Upright Row',
@@ -243,14 +243,14 @@ const exercises = [
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBFrontRaise.gif',
         kategori: 'omuz',
-        tur: 'other'
+        tur: 'pull'
       },
       {
         name: 'Barbell Front Raise',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/BBFrontRaise.gif',
         kategori: 'omuz',
-        tur: 'other'
+        tur: 'pull'
       },
       {
         name: 'Hamer curl',
@@ -285,7 +285,7 @@ const exercises = [
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBReverseWristCurl.gif',
         kategori: 'kol',
-        tur: 'other'
+        tur: 'pull'
       },
       {
         name: 'Supine Close Grip Bench Press',
@@ -733,35 +733,35 @@ const exercises = [
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/v2/unilateral%20leg%20press.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'Squat',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/v2/squat.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'Elevated bulgarian split squat',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/v2/split%20squat.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'ISOMETRIC WALL SQUAT WITH DB CURL',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/isometricwallsquatwithcurl.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'BARBELL BOX STEP UP',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/BBStepUp.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'SINGLE LEG KICKBACKS',
@@ -775,35 +775,35 @@ const exercises = [
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/DBwalking_latlunge.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'WALKING LUNGE WITH BARBELL',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/bb_walking_lunge.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'Romanian deadlift',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/v2/romain%20deadlift.gif',
         kategori: 'bacak',
-        tur: 'pull'
+        tur: 'other'
       },
       {
         name: 'Front Squat (barbell)',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/BBFrontSquat.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'OVERHEAD SQUAT (BARBELL)',
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/overhead_squat.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'STANDING MACHINE CALF RAISE',
@@ -817,7 +817,7 @@ const exercises = [
         description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
         imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/DB20press20with20isometric20lunge.gif',
         kategori: 'bacak',
-        tur: 'push'
+        tur: 'other'
       },
       {
         name: 'ADDUCTION MACHINE',
