@@ -2,7 +2,7 @@
     <nav class="sidebar locked">
         <div class="logo_items flex">
             <span class="nav_image">
-                <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
+                <img src="/new_favicon.ico"/>
             </span>
             <span class="logo_name">SağlıkPortalı</span>
             <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
@@ -40,9 +40,9 @@
                         </a>
                     </li>
                     <li class="item">
-                        <a href="#" class="link flex">
-                            <i class="bx bx-cloud-upload"></i>
-                            <span>Upload New</span>
+                        <a href="/exercises" class="link flex">
+                            <i class="bx bx-body"></i>
+                            <span>Egzersizler</span>
                         </a>
                     </li>
                 </ul>
@@ -96,10 +96,10 @@
             <% if (user) { %>
                 <div class="sidebar_profile flex">
                     <span class="nav_image">
-                        <img src="/profile-1.jpeg" alt="/profile-1.jpeg" />
+                        <img src="/profile-1.jpeg" href="/profile"   alt="/profile-1.jpeg" />
                     </span>
                     <div class="data_text">
-                        <span class="name"><%= user.name %> <%= user.surname %></span>
+                        <a class="name" href="/profile"><%= user.name %> <%= user.surname %></a>
                         <span class="email"><%= user.email %></span>
                     </div>
                 </div>

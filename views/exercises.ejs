@@ -89,6 +89,12 @@
       margin-bottom: 10px;
     }
 
+    .exercise-img {
+      border-radius: 10px 10px 0 0;
+      width: 100%;
+      height: auto;
+    }
+
   </style>
 </head>
 
@@ -104,39 +110,23 @@
 
       <div class="container mt-5">
         <div class="row justify-content-center align-items-center">
-          <div class="col-md-5 col-sm-5 col-xs-2">
+          <div class="col-md-8 col-sm-5 col-xs-2">
             <div class="container mt-5">
-              <div class="col-md-12 profile-header">
-                <h2><%= user.name %> <%= user.surname %></h2>
-                <p class="text-muted">Yaş: <%= new Date().getFullYear() - new Date(user.birthDate).getFullYear() %></p>
-                <div class="profile-info">
-                  <p>Son Giriş Tarihi: <%= new Date(user.lastLoginDate).toLocaleDateString() %></p>
-                  <p>Kayıt Tarihi: <%= new Date(user.registrationDate).toLocaleDateString() %></p>
-                  <p>Email: <%= user.email %></p>
-                  <p>Telefon: <%= user.telno %></p>
-                </div>
-              </div>
-            
-              <div class="test-results">
-                <div class="text-center border border-primary rounded mb-3 p-3" style="max-width: 18rem; cursor: pointer; transition: background-color 0.3s;" onclick="location.href='/test-results'">
-                  <div class="bg-primary text-white rounded-top p-2">Test Sonuçları</div>
-                  <div class="text-primary mt-3">
-                    <h5 class="mb-1">Yapılan Test Sayısı</h5>
-                    <p class="mb-0"><%= user.testResults.length %></p>
-                  </div>
-                </div>
-              </div>
+                <div class="row justify-content-center align-items-center">
+                <% exercises.forEach(exercise => { %>
+                    <div class="col-md-4">
+                      <div class="exercise-card">
+                        <img src="<%= exercise.imageUrl %>" alt="<%= exercise.name %>" class="exercise-img">
+                        <div class="exercise-card-body">
+                          <h5 class="exercise-card-title"><%= exercise.name %></h5>
+                          <p class="exercise-card-text"><%= exercise.description %></p>
+                        </div>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>  
             
               <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-              <script>
-                document.querySelector('.test-results .border').addEventListener('mouseover', function() {
-                  this.style.backgroundColor = '#f8f9fa';
-                });
-                
-                document.querySelector('.test-results .border').addEventListener('mouseout', function() {
-                  this.style.backgroundColor = '';
-                });
-              </script>
             </div>
           </div>
         </div>

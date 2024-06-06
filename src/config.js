@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const connect = mongoose.connect("mongodb+srv://huzeyfeatc9:05377164710fb@cluster0.yqkxkcc.mongodb.net/SaglikPortali");
 
 connect.then(() => {
-    console.log("Database connected succesfully");
+    console.log("Database connected successfully");
 })
-.catch(() => {
-    console.log("Database cannot be connected");
-})
+.catch((error) => {
+    console.log("Database cannot be connected:", error);
+});
 
 // Create a schema
 
-const LoginSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -38,9 +38,16 @@ const LoginSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    testResults: [
+        {
+            testName: String,
+            results: mongoose.Schema.Types.Mixed,
+            date: { type: Date, default: Date.now }
+        }
+    ]
 });
 
-const collection = new mongoose.model("users", LoginSchema); //model
+const User = mongoose.model("users", UserSchema); // model
 
-module.exports = collection;
+module.exports = User;
