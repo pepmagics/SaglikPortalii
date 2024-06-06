@@ -8,8 +8,6 @@ connect.then(() => {
     console.log("Database cannot be connected:", error);
 });
 
-// Create a schema
-
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
