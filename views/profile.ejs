@@ -63,30 +63,69 @@
       box-sizing: border-box;
     }
 
+    .profile-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
     .profile-header h2 {
       color: #495057;
+      margin-bottom: 10px;
     }
 
     .profile-header p {
       color: #6c757d;
-    }
-
-    .test-results h3 {
-      color: #495057;
-      margin-bottom: 20px;
-    }
-
-    .card {
-      height: 12rem;
-      cursor: pointer;
-    }
-
-    .card:hover {
-      transition: none; /* Kartın hover durumunda herhangi bir geçiş efekti olmamasını sağlar */
+      margin-bottom: 5px;
     }
 
     .profile-info p {
+      color: #6c757d;
       margin-bottom: 10px;
+    }
+
+    .test-results {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .test-results .result-box {
+      border: 2px solid #007bff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      background-color: white;
+    }
+
+    .test-results .result-box:hover {
+      transform: scale(1.05);
+      background-color: #f8f9fa;
+    }
+
+    .test-results .result-box h5 {
+      color: #007bff;
+    }
+
+    .test-results .result-box p {
+      color: #343a40;
+    }
+
+    .logout-btn {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .logout-btn a {
+      color: white;
+      background-color: #d9534f;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .logout-btn a:hover {
+      background-color: #c9302c;
     }
 
   </style>
@@ -104,7 +143,7 @@
 
       <div class="container mt-5">
         <div class="row justify-content-center align-items-center">
-          <div class="col-md-5 col-sm-5 col-xs-2">
+          <div class="col-md-6 col-sm-8 col-xs-10">
             <div class="container mt-5">
               <div class="col-md-12 profile-header">
                 <h2><%= user.name %> <%= user.surname %></h2>
@@ -118,25 +157,17 @@
               </div>
             
               <div class="test-results">
-                <div class="text-center border border-primary rounded mb-3 p-3" style="max-width: 18rem; cursor: pointer; transition: background-color 0.3s;" onclick="location.href='/test-results'">
-                  <div class="bg-primary text-white rounded-top p-2">Test Sonuçları</div>
-                  <div class="text-primary mt-3">
-                    <h5 class="mb-1">Yapılan Test Sayısı</h5>
-                    <p class="mb-0"><%= user.testResults.length %></p>
-                  </div>
+                <div class="result-box" onclick="location.href='/test-results'">
+                  <h5>Test Sonuçları</h5>
+                  <p>Yapılan Test Sayısı: <%= user.testResults.length %></p>
                 </div>
+              </div>
+
+              <div class="logout-btn">
+                <a href="/logout">Çıkış Yap</a>
               </div>
             
               <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-              <script>
-                document.querySelector('.test-results .border').addEventListener('mouseover', function() {
-                  this.style.backgroundColor = '#f8f9fa';
-                });
-                
-                document.querySelector('.test-results .border').addEventListener('mouseout', function() {
-                  this.style.backgroundColor = '';
-                });
-              </script>
             </div>
           </div>
         </div>

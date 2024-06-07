@@ -1,14 +1,23 @@
 const express = require("express");
 const path = require("path");
-const User = require("./config");
+const {User, Message} = require("./config");
 const bcrypt = require('bcryptjs');
 const bodyParser = require("body-parser");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const { exec } = require('child_process');
+const socketIo = require('socket.io');
+const http = require('http');
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 // Convert data into json format
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -67,6 +76,72 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get('/api/messages/:userId/:recipientId', async (req, res) => {
+  const { userId, recipientId } = req.params;
+  const messages = await Message.find({
+      $or: [
+          { sender: userId, recipient: recipientId },
+          { sender: recipientId, recipient: userId }
+      ]
+  }).populate('sender');
+
+  res.json(messages);
+});
+
+// Post a new message
+app.post('/api/messages', async (req, res) => {
+  const { senderId, recipientId, content } = req.body;
+  const message = new Message({
+      sender: senderId,
+      recipient: recipientId,
+      content: content
+  });
+
+  await message.save();
+  res.status(201).json(message);
+});
+
+// Eğitmen kullanıcı listesi
+app.get('/users', async (req, res) => {
+  if (!req.isAuthenticated()) {
+      return res.redirect('/login');
+  }
+
+  if (!req.user.isTrainer) {
+      return res.status(403).send('Erişim reddedildi');
+  }
+
+  const users = await User.find({ isTrainer: false});
+  res.render('users', { users });
+});
+
+// Kullanıcı Eğitmen listesi
+app.get('/trainers', async (req, res) => {
+  if (!req.isAuthenticated()) {
+      return res.redirect('/login');
+  }
+  const users = await User.find({isTrainer: true });
+  res.render('trainers', { users });
+});
+
+// Belirli bir kullanıcı ile sohbet
+app.get('/chat/:userId', async (req, res) => {
+  if (!req.isAuthenticated()) {
+      return res.redirect('/login');
+  }
+  const user_ = await User.findById(req.params.userId);
+  const messages = await Message.find({
+      $or: [
+          { sender: req.user._id, recipient: req.params.userId },
+          { sender: req.params.userId, recipient: req.user._id }
+      ]
+  }).populate('sender');
+
+  res.render('chat', { user_, messages, currentUser: req.user });
+});
+
+
+
 // Routes
 app.get("/", (req, res) => {
     res.render("home");
@@ -109,7 +184,7 @@ app.get("/profile", (req, res) => {
     res.render("profile", { user: req.user });
 });
 
-app.post("/logout", (req, res) => {
+app.get("/logout", (req, res) => {
     req.logout((err) => {
         if (err) {
             return next(err);
@@ -835,18 +910,20 @@ app.get('/exercises', (req, res) => {
   app.get('/exercise-finder', (req, res) => {
     const { kategori, tur } = req.query;
     let filteredExercises = exercises;
-
+  
     if (kategori) {
-        filteredExercises = filteredExercises.filter(exercise => exercise.kategori === kategori);
+      filteredExercises = filteredExercises.filter(exercise => exercise.kategori === kategori);
     }
-
+  
     if (tur) {
-        filteredExercises = filteredExercises.filter(exercise => exercise.tur === tur);
+      filteredExercises = filteredExercises.filter(exercise => exercise.tur === tur);
     }
-
-    filteredExercises = filteredExercises.slice(0, 3); // Limit to 3 exercises
+  
+    // Shuffle the filtered exercises
+    filteredExercises = filteredExercises.sort(() => Math.random() - 0.5).slice(0, 3);
+  
     res.render('exercise-finder', { exercises: filteredExercises });
-});
+  });
 
 app.get("/test-details/:testId", async (req, res) => {
     if (!req.isAuthenticated()) {

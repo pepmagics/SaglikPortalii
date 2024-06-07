@@ -24,25 +24,38 @@
                             <span>All Projects</span>
                         </a>
                     </li>
+                    <% if (user && user.isTrainer) { %>
+                        <li class="item">
+                            <a href="/users" class="link flex">
+                                <i class="bx bxs-conversation"></i>
+                                <span>Chat</span>
+                            </a>
+                        </li>
+                    <% } else if (user && !user.isTrainer) { %>
+                        <li class="item">
+                            <a href="/trainers" class="link flex">
+                                <i class="bx bxs-conversation"></i>
+                                <span>Chat</span>
+                            </a>
+                        </li>
+                    <% } %>
                 </ul>
 
                 <ul class="menu_item " style="padding:0;">
-                    <li class="item">
-                        <a href="/exercise-finder" class="link flex">
-                            <i class="bx bxs-magic-wand"></i>
-                            <span>Egzersiz Bulucu</span>
-                        </a>
-                    </li>
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class="bx bx-folder"></i>
-                            <span>New Projects</span>
-                        </a>
-                    </li>
+                    <div class="menu_title flex">
+                        <div class="title">Egzersiz</div>
+                        <span class="line"></span>
+                    </div>
                     <li class="item">
                         <a href="/exercises" class="link flex">
                             <i class="bx bx-body"></i>
                             <span>Egzersizler</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="/exercise-finder" class="link flex">
+                            <i class="bx bxs-magic-wand"></i>
+                            <span>Egzersiz Bulucu</span>
                         </a>
                     </li>
                 </ul>
@@ -65,7 +78,7 @@
                     </li>
                     <li class="item">
                         <a href="/indeks" class="link flex">
-                            <i class="bx bx-body"></i>
+                            <i class="bx bx-math"></i>
                             <span>Vücut Kitle İndeksi</span>
                         </a>
                     </li>
@@ -74,18 +87,18 @@
                 <% if (!user) { %>
                     <ul class="menu_item " style="padding:0;">
                         <div class="menu_title flex">
-                            <span class="title">Giriş Yap</span>
+                            <span class="title">Kullanıcı</span>
                             <span class="line"></span>
                         </div>
                         <li class="item">
                             <a href="/login" class="link flex">
-                                <i class="bx bx-cog"></i>
+                                <i class="fa-solid fa-user"></i>
                                 <span>Giriş Yap</span>
                             </a>
                         </li>
-                        <li class="item">
+                        <li class="item" style="padding-left: 4px;">
                             <a href="/signup" class="link flex">
-                                <i class="bx bx-cog"></i>
+                                <i class="fa-solid fa-user-plus"></i> 
                                 <span>Kaydol</span>
                             </a>
                         </li>

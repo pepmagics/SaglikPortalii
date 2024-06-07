@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
-const connect = mongoose.connect("mongodb+srv://huzeyfeatc9:05377164710fb@cluster0.yqkxkcc.mongodb.net/SaglikPortali");
 
-connect.then(() => {
-    console.log("Database connected successfully");
-})
-.catch((error) => {
-    console.log("Database cannot be connected:", error);
-});
+mongoose.connect("mongodb+srv://huzeyfeatc9:05377164710fb@cluster0.yqkxkcc.mongodb.net/SaglikPortali")
+    .then(() => {
+        console.log("Database connected successfully");
+    })
+    .catch((error) => {
+        console.log("Database connection error:", error);
+    });
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    isTrainer: {
+        type: Boolean,
+        default: false
+    },
     testResults: [
         {
             testName: String,
@@ -46,6 +50,29 @@ const UserSchema = new mongoose.Schema({
     ]
 });
 
-const User = mongoose.model("users", UserSchema); // model
+const User = mongoose.model("users", UserSchema);
 
-module.exports = User;
+const MessageSchema = new mongoose.Schema({
+    sender: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
+    recipient: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+const Message = mongoose.model('messages', MessageSchema);
+
+module.exports = { User, Message };

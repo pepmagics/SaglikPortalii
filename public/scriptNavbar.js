@@ -7,20 +7,6 @@ const sidebarCloseBtn = document.querySelector("#sidebar-close");
 sidebar.classList.add("hoverable");
 sidebar.classList.add("close");
 
-
-//Function to toggle the lock state of the sidebar
-// const toggleLock = () => {
-//   sidebar.classList.toggle("locked");
-//   // If the sidebar is not locked
-//   if (!sidebar.classList.contains("locked")) {
-//     sidebar.classList.add("hoverable");
-//     sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
-//   } else {
-//     sidebar.classList.remove("hoverable");
-//     sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
-//   }
-// };
-
 sidebar.classList.add("hoverable");
 sidebar.classList.add("close");
 // Function to hide the sidebar when the mouse leaves
