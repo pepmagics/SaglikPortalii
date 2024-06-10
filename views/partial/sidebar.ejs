@@ -5,8 +5,6 @@
                 <img src="/new_favicon.ico"/>
             </span>
             <span class="logo_name">SağlıkPortalı</span>
-            <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
-            <i class="bx bx-x" id="sidebar-close"></i>
         </div>
 
         <div class="menu_container ">
@@ -16,12 +14,6 @@
                         <a href="/" class="link flex">
                             <i class="bx bx-home-alt"></i>
                             <span>Anasayfa</span>
-                        </a>
-                    </li>
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class="bx bx-grid-alt"></i>
-                            <span>All Projects</span>
                         </a>
                     </li>
                     <% if (user && user.isTrainer) { %>
@@ -40,7 +32,30 @@
                         </li>
                     <% } %>
                 </ul>
-
+                <ul class="menu_item " style="padding:0;">
+                    <div class="menu_title flex">
+                        <div class="title">Beslenme</div>
+                        <span class="line"></span>
+                    </div>
+                    <li class="item">
+                        <a href="/nutrition" class="link flex">
+                            <i class="bx bx-body"></i>
+                            <span>Beslenme Programı</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="/nutrition-finder" class="link flex">
+                            <i class="bx bxs-magic-wand"></i>
+                            <span>Yemek Bulucu</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="/nutrition-body" class="link flex">
+                            <i class="bx bxs-magic-wand"></i>
+                            <span>Beslenme Planı</span>
+                        </a>
+                    </li>
+                </ul>
                 <ul class="menu_item " style="padding:0;">
                     <div class="menu_title flex">
                         <div class="title">Egzersiz</div>

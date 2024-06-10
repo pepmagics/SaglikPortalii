@@ -1,16 +1,21 @@
-const express = require("express");
 const path = require("path");
-const {User, Message} = require("./config");
+const { User, Message } = require("./config");
 const bcrypt = require('bcryptjs');
 const bodyParser = require("body-parser");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-const { exec } = require('child_process');
-const socketIo = require('socket.io');
-const http = require('http');
 
+const { exec } = require('child_process');
+
+const socketIo = require('socket.io');
+
+const http = require('http');
+const exercises = require('./exercises');
+const foods = require('./nutrition');
+const express = require("express");
 const app = express();
+
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
@@ -18,12 +23,13 @@ const io = socketIo(server, {
         methods: ["GET", "POST"]
     }
 });
+
 // Convert data into json format
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Use EJS as the view engine
+
 app.set('view engine', 'ejs');
 
 // Helping to use css files
@@ -76,29 +82,36 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/api/messages/:userId/:recipientId', async (req, res) => {
-  const { userId, recipientId } = req.params;
-  const messages = await Message.find({
-      $or: [
-          { sender: userId, recipient: recipientId },
-          { sender: recipientId, recipient: userId }
-      ]
-  }).populate('sender');
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    
+    // Mesajları yükle
+    socket.on('loadMessages', async ({ userId, recipientId }) => {
+        const messages = await Message.find({
+            $or: [
+                { sender: userId, recipient: recipientId },
+                { sender: recipientId, recipient: userId }
+            ]
+        }).populate('sender');
+        socket.emit('messages', messages);
+    });
 
-  res.json(messages);
-});
-
-// Post a new message
-app.post('/api/messages', async (req, res) => {
-  const { senderId, recipientId, content } = req.body;
+    // Yeni mesaj gönderildiğinde
+socket.on('sendMessage', async ({ senderId, recipientId, content }) => {
   const message = new Message({
       sender: senderId,
       recipient: recipientId,
-      content: content
+      content: content,
+      date: new Date()
   });
-
   await message.save();
-  res.status(201).json(message);
+  socket.broadcast.emit('newMessage', message); // Yeni mesajı diğer istemcilere gönder
+});
+
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
 });
 
 // Eğitmen kullanıcı listesi
@@ -111,7 +124,7 @@ app.get('/users', async (req, res) => {
       return res.status(403).send('Erişim reddedildi');
   }
 
-  const users = await User.find({ isTrainer: false});
+  const users = await User.find({ isTrainer: false });
   res.render('users', { users });
 });
 
@@ -120,7 +133,7 @@ app.get('/trainers', async (req, res) => {
   if (!req.isAuthenticated()) {
       return res.redirect('/login');
   }
-  const users = await User.find({isTrainer: true });
+  const users = await User.find({ isTrainer: true });
   res.render('trainers', { users });
 });
 
@@ -139,8 +152,6 @@ app.get('/chat/:userId', async (req, res) => {
 
   res.render('chat', { user_, messages, currentUser: req.user });
 });
-
-
 
 // Routes
 app.get("/", (req, res) => {
@@ -249,681 +260,45 @@ app.post("/login", passport.authenticate('local', {
     failureFlash: true
 }));
 
-const exercises = [
-    {
-        name: 'Overhead press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/overhead%20press.gif',
-        kategori: 'omuz',
-        tur: 'push'
-      },
-      {
-        name: 'Lateral Raise',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/lateral%20raise.gif',
-        kategori: 'omuz',
-        tur: 'pull'
-      },
-      {
-        name: 'Incline Lateral/Trap Raise',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/oefeningen2/boraise.gif',
-        kategori: 'omuz',
-        tur: 'pull'
-      },
-      {
-        name: 'Lying Dumbbell Rear Lateral Raise',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/oefeningen2/DBLyingRearLateralRaise.gif',
-        kategori: 'omuz',
-        tur: 'pull'
-      },
-      {
-        name: 'Dumbbell Seated Rear Lateral Raise',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBSeatedRearLateralRaise.gif',
-        kategori: 'omuz',
-        tur: 'pull'
-      },
-      {
-        name: 'Standing Dumbbell Upright Row',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/oefeningen2/DBUPROW.gif',
-        kategori: 'omuz',
-        tur: 'pull'
-      },
-      {
-        name: 'Standing Barbell Curl and Press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/barcurlandpress1.gif',
-        kategori: 'omuz',
-        tur: 'push'
-      },
-      {
-        name: 'Dumbbell curl with shoulder press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBcurlandpress.gif',
-        kategori: 'omuz',
-        tur: 'push'
-      },
-      {
-        name: 'Seated Dumbbell Shoulder Press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBShoulderPress.gif',
-        kategori: 'omuz',
-        tur: 'push'
-      },
-      {
-        name: 'Alternating Dumbbell Front Raise',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBFrontRaise.gif',
-        kategori: 'omuz',
-        tur: 'pull'
-      },
-      {
-        name: 'Barbell Front Raise',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/BBFrontRaise.gif',
-        kategori: 'omuz',
-        tur: 'pull'
-      },
-      {
-        name: 'Hamer curl',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/hamer%20curl.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Rope push down',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/rope%20pushdown.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Skull Crusher',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/Skull%20Crusher.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Cable curl',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/cable%20curl.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Dumbbell Wrist Curl',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBReverseWristCurl.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Supine Close Grip Bench Press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/triceps2.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Dumbbell Curl (two arms)',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/db_biceps_curl.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Concentration Curl',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBConcentrationCurl.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Barbell curl',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/BBCurl.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Dumbell/Bicep curl',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBCurl.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Isometric Wall Squat with dumbbell Curl',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/isometricwallsquatwithcurl.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Dynamic Lunge and Curl',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/dynamiclungecurl1.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Dumbbell curl with shoulder press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBcurlandpress.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Supine Dumbbell bicep curl',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/Supine%20DB%20bicep%20curl.gif',
-        kategori: 'kol',
-        tur: 'pull'
-      },
-      {
-        name: 'Diamond Pushups',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/11DiamondPushup.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Lying Dumbbell Tricep Extension',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBLyingTriExt.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Close Grip Bench Press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/BBCloseGripBenchPress.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Bent Over Cable Extension',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/CBBentoverTriExt.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Seated Barbell Extension',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/BBTriExt.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Seated Dumbbell Tricep Overhead Extension',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBTriExt.gif',
-        kategori: 'kol',
-        tur: 'push'
-      },
-      {
-        name: 'Bench cable fly',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/cable%20fly.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Dumbbell press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/dumbbell%20press.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Barbel bench press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/bench%20press.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'DECLINE MACHINE CHEST FLY',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/DeclineFly.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Pull Over (stability ball)',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/PullOverOnBall.gif',
-        kategori: 'gögüs',
-        tur: 'pull'
-      },
-      {
-        name: 'Standard Pushup',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/08StandardPushup.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'DUMBBELL PRESS ON BALL (STABILITY BALL)',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DBpress.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Decline Dumbell Chest Flye',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/decline%20DB%20flye.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Decline Dumbbell Bench Press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/DeclineBenchPress.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Decline Bench Press (barbell)',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/BarbellDeclineBenchPress.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Decline Machine Chest Press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DeclineChestPress.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Dumbell pullover',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/DBPullover.gif',
-        kategori: 'gögüs',
-        tur: 'pull'
-      },
-      {
-        name: 'MACHINE INCLINE CHEST PRESS',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/machinei.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'BARBELL INCLINE BENCH PRESS',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/Barbell%20Incline%20Chest%20Press.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'INCLINE DUMBBELL CHEST FLY',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/InclineBenchPress.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Incline dumbell press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DB%20incline%20chest%20press.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Wide Pushups',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/09WidePushup.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Decline Machine Chest Fly',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/DeclineFly.gif',
-        kategori: 'gögüs',
-        tur: 'push'
-      },
-      {
-        name: 'Side plank',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/v2/side-plank.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Planking',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/planking.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Straight Leg Obliques',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/big_cats.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Air Bike Crunches',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/Air%20Bike.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Full Situp with Twist',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/full_sit-up_twist.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Ankle Wiggles',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/ankle_wiggles.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Alternating Toe Touch',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/alt_toe_touch_crunch.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Supine Double Leg Raise',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/Double%20leg%20raise.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Hanging Hip Raise',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/WtHangHipRaise.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Power boat pose',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/the%20power%20boat%20pose.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Ball Transfer Crunch',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/Ball%20Transfer%20Crunch.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Crunch',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/Abdominal%20Crunch5.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Double Crunch',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/suitcase_crunch.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Vertical Hip Raise',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/voorbeeldoefeningen/WtVerticalHipRaise.gif',
-        kategori: 'karin',
-        tur: 'other'
-      },
-      {
-        name: 'Wide lat pulldown',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/wide%20lat%20pulldown.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'Pull up',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/pull%20up.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'Dumbbell bent over-row',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/v2/dumbell%20row.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'Unilateral lat prayer',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/Unilateral%20lat%20prayer.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'Unilateral Face Pull',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/face%20pull.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'Unilateral shoulder pull',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnesschemas.nl/images/v2/shoulder%20pull.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'OPPOSITE ARM OPPOSITE LEG RAISE',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/opposite%20arm%20opposite%20leg%20raise.gif',
-        kategori: 'sirt',
-        tur: 'other'
-      },
-      {
-        name: 'BACK EXTENSION WITH LOWER TRAP RAISE',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/8.gif',
-        kategori: 'sirt',
-        tur: 'other'
-      },
-      {
-        name: 'ALTERNATING SUPERMAN',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/alt_superman.gif',
-        kategori: 'sirt',
-        tur: 'other'
-      },
-      {
-        name: 'V-BAR PULLDOWNS',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/closegri.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'UNDERHAND LOW ROW',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/low%20row%20underhand%20grip.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'CLOSE GRIP UNDERHAND PULLDOWN',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/LVUnderhandPulldown.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'T-BAR ROWS',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/tbarrows.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },          
-      {
-        name: 'SEATED ROW WITH BANDS',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/vsit-rw_fittube_sec_door_attachment.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'STANDING DUMBELL UPRIGHT ROW',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/DBUPROW.gif',
-        kategori: 'sirt',
-        tur: 'pull'
-      },
-      {
-        name: 'Calf jumps',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/v2/calf%20jumps.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'Unilateral leg press',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/v2/unilateral%20leg%20press.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'Squat',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/v2/squat.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'Elevated bulgarian split squat',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/v2/split%20squat.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'ISOMETRIC WALL SQUAT WITH DB CURL',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/isometricwallsquatwithcurl.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'BARBELL BOX STEP UP',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/BBStepUp.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'SINGLE LEG KICKBACKS',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/single%20leg%20kickback.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'WALKING LATERAL DB LUNGE',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/DBwalking_latlunge.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'WALKING LUNGE WITH BARBELL',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/bb_walking_lunge.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'Romanian deadlift',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/v2/romain%20deadlift.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'Front Squat (barbell)',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/BBFrontSquat.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'OVERHEAD SQUAT (BARBELL)',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/oefeningen2/overhead_squat.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'STANDING MACHINE CALF RAISE',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/Standing%20Machine%20Calf%20Raise.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'DUMBELLS PRESS WITH ISOMETRIC LUNGE',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/voorbeeldoefeningen/DB20press20with20isometric20lunge.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      },
-      {
-        name: 'ADDUCTION MACHINE',
-        description: 'Bir ayağınızı öne atarak çömelin ve tekrar kalkın.',
-        imageUrl: 'https://www.fitnessschemas.nl/images/adductor%20machine.gif',
-        kategori: 'bacak',
-        tur: 'other'
-      }          
-];
-
 app.get('/exercises', (req, res) => {
     res.render('exercises', { exercises });
-  });
-  
-  app.get('/exercise-finder', (req, res) => {
+});
+
+app.get('/exercise-finder', (req, res) => {
     const { kategori, tur } = req.query;
     let filteredExercises = exercises;
-  
+
     if (kategori) {
-      filteredExercises = filteredExercises.filter(exercise => exercise.kategori === kategori);
+        filteredExercises = filteredExercises.filter(exercise => exercise.kategori === kategori);
     }
-  
+
     if (tur) {
-      filteredExercises = filteredExercises.filter(exercise => exercise.tur === tur);
+        filteredExercises = filteredExercises.filter(exercise => exercise.tur === tur);
     }
-  
+
     // Shuffle the filtered exercises
     filteredExercises = filteredExercises.sort(() => Math.random() - 0.5).slice(0, 3);
-  
+
     res.render('exercise-finder', { exercises: filteredExercises });
-  });
+});
+
+app.get('/nutrition', (req, res) => {
+  res.render('nutrition', { foods });
+});
+
+app.get('/filter-foods', (req, res) => {
+  const category = req.query.category;
+  const filteredFoods = foods.filter(food => food.kategori === category);
+  res.json({ foods: filteredFoods });
+});
+
+app.get('/nutrition-finder', (req, res) => {
+  res.render('nutrition-finder');
+});
+
+app.get('/nutrition-body', (req, res) => {
+  res.render('nutrition-body');
+});
 
 app.get("/test-details/:testId", async (req, res) => {
     if (!req.isAuthenticated()) {
@@ -950,17 +325,16 @@ app.get("/test-details/:testId", async (req, res) => {
 
 app.get('/test-results', (req, res) => {
     if (!req.isAuthenticated()) {
-      return res.redirect('/login');
+        return res.redirect('/login');
     }
-  
     // Assuming user data is available in req.user
     const user = req.user;
-  
+
     res.render('test-results', {
-      user: user
+        user: user
     });
-  });
-  
+});
+
 app.post("/kalp-krizi-test", async (req, res) => {
     try {
         const userId = req.user._id;
@@ -1003,14 +377,12 @@ app.post("/kalp-krizi-test", async (req, res) => {
                 }
             });
         }
-
         res.render('kalp-krizi-test', { output: cleanOutput });
     } catch (error) {
         console.error('Error running Python script:', error);
         res.status(500).send('An error occurred');
     }
 });
-
 
 const runPythonScriptHeart = (rangeInputHeart) => {
     return new Promise((resolve, reject) => {
@@ -1028,8 +400,7 @@ const runPythonScriptHeart = (rangeInputHeart) => {
 
 app.get('/kalp-krizi-test', async (req, res) => {
     res.render('kalp-krizi-test', { output: '' });
-}
-);
+});
 
 app.post("/akciger-kanseri-testi", async (req, res) => {
     try {
@@ -1084,7 +455,6 @@ app.post("/akciger-kanseri-testi", async (req, res) => {
     }
 });
 
-
 // Python scriptini çalıştıran fonksiyon
 const runPythonScript = (rangeInput) => {
     return new Promise((resolve, reject) => {
@@ -1106,6 +476,6 @@ app.get('/akciger-kanseri-testi', async (req, res) => {
 
 const port = 3000;
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Serverın çalıştığı port: ${port}`);
 });

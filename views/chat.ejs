@@ -13,8 +13,7 @@
   <script src="/scriptNavbar.js" defer></script>
   <link rel="stylesheet" href="/navbar.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
   <style>
     body {
       background-position: center;
@@ -69,38 +68,6 @@
       box-sizing: border-box;
     }
 
-    .profile-header h2 {
-      color: #495057;
-    }
-
-    .profile-header p {
-      color: #6c757d;
-    }
-
-    .test-results h3 {
-      color: #495057;
-      margin-bottom: 20px;
-    }
-
-    .card {
-      height: 12rem;
-      cursor: pointer;
-    }
-
-    .card:hover {
-      transition: none; /* Kartın hover durumunda herhangi bir geçiş efekti olmamasını sağlar */
-    }
-
-    .profile-info p {
-      margin-bottom: 10px;
-    }
-
-    .exercise-img {
-      border-radius: 10px 10px 0 0;
-      width: 100%;
-      height: auto;
-    }
-
     .chat-container {
       background-color: #2a2f32;
       border-radius: 10px;
@@ -117,21 +84,7 @@
       padding: 10px;
       background-color: #333;
       color: white;
-      text-align: center;
-      display: flex;
-      align-items: center;
-    }
-
-    .chat-header h4 {
-      margin: 0;
-      flex-grow: 1;
       text-align: left;
-    }
-
-    .chat-header .back-button {
-      margin-right: 10px;
-      color: white;
-      text-decoration: none;
     }
 
     #messages {
@@ -144,12 +97,24 @@
       flex-direction: column;
     }
 
+    #messages .message-group {
+      margin-bottom: 20px;
+    }
+
+    #messages .date-header {
+      text-align: right;
+      color: #999;
+      margin-bottom: 10px;
+      width: 335px;
+    }
+
     #messages li {
       padding: 10px 15px;
       margin: 10px 0;
       border-radius: 20px;
       max-width: 75%;
       word-wrap: break-word;
+      position: relative;
     }
 
     #messages li.sent {
@@ -160,6 +125,13 @@
     #messages li.received {
       align-self: flex-start;
       background-color: #ffffff;
+    }
+
+    #messages .time {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 0.8em;
+      color: #555;
     }
 
     .chat-footer {
@@ -188,8 +160,8 @@
 
     /* Scrollbar genişliği ve yüksekliği */
     ::-webkit-scrollbar {
-      width: 12px; /* Dikey scrollbar için genişlik */
-      height: 12px; /* Yatay scrollbar için yükseklik */
+      width: 12px;
+      height: 12px;
     }
 
     /* Scrollbar arka planı */
@@ -200,16 +172,15 @@
 
     /* Scrollbarın kendisi */
     ::-webkit-scrollbar-thumb {
-      background-color: #DBF8C6; /* Scrollbarın rengi */
+      background-color: #DBF8C6;
       border-radius: 10px;
-      border: 3px solid #2a2f32; /* Scrollbarın etrafındaki boşluk rengi */
+      border: 3px solid #2a2f32;
     }
 
     /* Hover yapıldığında scrollbar */
     ::-webkit-scrollbar-thumb:hover {
       background-color: #0a74da;
     }
-
   </style>
 </head>
 
@@ -225,29 +196,22 @@
 
       <div class="container">
         <div class="row justify-content-center align-items-center">
-          <div class="col-md-6 col-sm-5 col-xs-2">
+          <div class="col-md-6 col-sm-8 col-xs-10">
             <div class="container mt-5">
-                <div class="chat-container">
-                    <div class="chat-header">
-                      <a href="javascript:history.back()" class="back-button">
-                        <i class="fas fa-arrow-left"></i>
-                      </a>
-                      <h4 class="ms-2"><%= user_.name %> <%= user_.surname %></h4>
-                    </div>
-                    <ul id="messages">
-                      <% messages.forEach(message => { %>
-                        <li class="<%= message.sender._id.equals(currentUser._id) ? 'sent' : 'received' %>">
-                          <%= message.content %>
-                        </li>
-                      <% }) %>
-                    </ul>   
-                    <div class="chat-footer">
-                      <form id="messageForm" style="display: flex; width: 100%;">
-                        <input id="recipient" type="hidden" name="recipientId" value="<%= user_._id %>">
-                        <input id="messageInput" autocomplete="off" placeholder="Mesajınızı yazın..."><button>Gönder</button>
-                      </form>
-                    </div>
-                  </div>
+              <div class="chat-container">
+                <div class="chat-header">
+                  <button class="btn btn-light" onclick="history.back()"><i class="fa fa-arrow-left"></i> Geri</button>
+                  <h4 class="d-inline-block ms-3"><%= user_.name %> <%= user_.surname %></h4>
+                </div>
+                <ul id="messages">
+                </ul>
+                <div class="chat-footer">
+                  <form id="messageForm" style="display: flex; width: 100%;">
+                    <input id="recipient" type="hidden" name="recipientId" value="<%= user_._id %>">
+                    <input id="messageInput" autocomplete="off" placeholder="Mesajınızı yazın..."><button>Gönder</button>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -256,59 +220,84 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const userId = '<%= currentUser._id %>';
-      const recipientId = '<%= user_._id %>';
+    const userId = '<%= currentUser._id %>';
+    const recipientId = '<%= user_._id %>';
+    const socket = io();
 
-      // Mesajları yükle
-      async function loadMessages(scroll = false) {
-        const response = await fetch(`/api/messages/${userId}/${recipientId}`);
-        const messages = await response.json();
+    // Mesajları yükle
+    socket.emit('loadMessages', { userId, recipientId });
 
-        const messageList = document.getElementById('messages');
-        const shouldScroll = messageList.scrollTop + messageList.clientHeight === messageList.scrollHeight;
-        
-        messageList.innerHTML = '';
-        messages.forEach(msg => {
-          const messageItem = document.createElement('li');
-          messageItem.className = msg.sender._id === userId ? 'sent' : 'received';
-          messageItem.innerHTML = `${msg.content}`;
-          messageList.appendChild(messageItem);
+    socket.on('messages', (messages) => {
+      const groupedMessages = groupMessagesByDate(messages);
+      const messageList = document.getElementById('messages');
+      messageList.innerHTML = '';
+      Object.keys(groupedMessages).forEach(date => {
+        const dateHeader = document.createElement('li');
+        dateHeader.className = 'date-header';
+        dateHeader.innerHTML = date;
+        messageList.appendChild(dateHeader);
+
+        groupedMessages[date].forEach(msg => {
+          addMessageToList(msg);
         });
-
-        // Mesaj listesinin sonuna kaydır
-        if (scroll || shouldScroll) {
-          messageList.scrollTop = messageList.scrollHeight;
-        }
-      }
-
-      loadMessages(true);
-
-      // Mesaj gönderme
-      document.getElementById('messageForm').addEventListener('submit', async function (event) {
-        event.preventDefault();
-        const content = document.getElementById('messageInput').value;
-
-        const message = {
-          senderId: userId,
-          recipientId: recipientId,
-          content: content
-        };
-
-        await fetch('/api/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(message)
-        });
-
-        document.getElementById('messageInput').value = '';
-        loadMessages(true); // Mesaj gönderildiğinde en alta kaydır
       });
+    });
 
-      // Mesajları belirli aralıklarla yenile
-      setInterval(() => loadMessages(false), 1000); // Her saniyede bir mesajları yenile
+    // Sunucudan yeni mesaj geldiğinde mesajı ekle
+    socket.on('newMessage', (msg) => {
+      // Mesajın alıcıya mı yoksa göndericiye mi ait olduğunu kontrol et
+      if (msg.sender._id !== userId) {
+        addMessageToList(msg);
+      }
+    });
+
+    function groupMessagesByDate(messages) {
+      return messages.reduce((groups, message) => {
+        const date = new Date(message.date).toLocaleDateString('tr-TR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+        if (!groups[date]) {
+          groups[date] = [];
+        }
+        groups[date].push(message);
+        return groups;
+      }, {});
+    }
+
+    function addMessageToList(msg) {
+      const messageList = document.getElementById('messages');
+      const messageItem = document.createElement('li');
+      messageItem.className = msg.sender._id === userId ? 'sent' : 'received';
+      messageItem.innerHTML = `${msg.content} <span class="time">${new Date(msg.date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}</span>`;
+      messageList.appendChild(messageItem);
+      messageList.scrollTop = messageList.scrollHeight; // Mesaj listesinin sonuna kaydır
+    }
+
+    // Mesaj gönderme
+    document.getElementById('messageForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const content = document.getElementById('messageInput').value.trim();
+
+      if (content === "") return;
+
+      const message = {
+        senderId: userId,
+        recipientId: recipientId,
+        content: content
+      };
+
+      socket.emit('sendMessage', message);
+
+      document.getElementById('messageInput').value = '';
+
+      // Gönderilen mesajı yalnızca göndericiye göster
+      addMessageToList({
+        sender: { _id: userId },
+        content: content,
+        date: new Date()
+      });
     });
   </script>
 </body>
