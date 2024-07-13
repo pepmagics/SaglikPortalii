@@ -5,11 +5,8 @@ const bodyParser = require("body-parser");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-
 const { exec } = require('child_process');
-
 const socketIo = require('socket.io');
-
 const http = require('http');
 const exercises = require('./exercises');
 const foods = require('./nutrition');
@@ -28,7 +25,6 @@ const io = socketIo(server, {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 app.set('view engine', 'ejs');
 
@@ -97,17 +93,16 @@ io.on('connection', (socket) => {
     });
 
     // Yeni mesaj gönderildiğinde
-socket.on('sendMessage', async ({ senderId, recipientId, content }) => {
-  const message = new Message({
-      sender: senderId,
-      recipient: recipientId,
-      content: content,
-      date: new Date()
-  });
-  await message.save();
-  socket.broadcast.emit('newMessage', message); // Yeni mesajı diğer istemcilere gönder
-});
-
+    socket.on('sendMessage', async ({ senderId, recipientId, content }) => {
+        const message = new Message({
+            sender: senderId,
+            recipient: recipientId,
+            content: content,
+            date: new Date()
+        });
+        await message.save();
+        socket.broadcast.emit('newMessage', message); // Yeni mesajı diğer istemcilere gönder
+    });
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
@@ -116,46 +111,46 @@ socket.on('sendMessage', async ({ senderId, recipientId, content }) => {
 
 // Eğitmen kullanıcı listesi
 app.get('/users', async (req, res) => {
-  if (!req.isAuthenticated()) {
-      return res.redirect('/login');
-  }
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
 
-  if (!req.user.isTrainer) {
-      return res.status(403).send('Erişim reddedildi');
-  }
+    if (!req.user.isTrainer) {
+        return res.status(403).send('Erişim reddedildi');
+    }
 
-  const users = await User.find({ isTrainer: false });
-  res.render('users', { users });
+    const users = await User.find({ isTrainer: false });
+    res.render('users', { users });
 });
 
 // Kullanıcı Eğitmen listesi
 app.get('/trainers', async (req, res) => {
-  if (!req.isAuthenticated()) {
-      return res.redirect('/login');
-  }
-  const users = await User.find({ isTrainer: true });
-  res.render('trainers', { users });
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
+    const users = await User.find({ isTrainer: true });
+    res.render('trainers', { users });
 });
 
 // Belirli bir kullanıcı ile sohbet
 app.get('/chat/:userId', async (req, res) => {
-  if (!req.isAuthenticated()) {
-      return res.redirect('/login');
-  }
-  const user_ = await User.findById(req.params.userId);
-  const messages = await Message.find({
-      $or: [
-          { sender: req.user._id, recipient: req.params.userId },
-          { sender: req.params.userId, recipient: req.user._id }
-      ]
-  }).populate('sender');
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
+    const user_ = await User.findById(req.params.userId);
+    const messages = await Message.find({
+        $or: [
+            { sender: req.user._id, recipient: req.params.userId },
+            { sender: req.params.userId, recipient: req.user._id }
+        ]
+    }).populate('sender');
 
-  res.render('chat', { user_, messages, currentUser: req.user });
+    res.render('chat', { user_, messages, currentUser: req.user });
 });
 
 // Routes
 app.get("/", (req, res) => {
-    res.render("home");
+    res.render("indeks", { bmi: "" });
 });
 
 app.get("/indeks", (req, res) => {
@@ -186,6 +181,29 @@ app.get("/profile/editProfile", (req, res) => {
         return res.redirect('/login');
     }
     res.render("editProfile", { user: req.user });
+});
+
+app.post("/profile/editProfile", async (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
+
+    const { name, surname, username, email, telno, birthDate } = req.body;
+    try {
+        await User.findByIdAndUpdate(req.user._id, {
+            name,
+            surname,
+            username,
+            email,
+            telno,
+            birthDate
+        });
+
+        res.redirect("/profile");
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        res.status(500).send("An error occurred while updating the profile.");
+    }
 });
 
 app.get("/profile", (req, res) => {
@@ -255,7 +273,7 @@ app.post("/signup", async (req, res) => {
 
 // Login User
 app.post("/login", passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/profile',
     failureRedirect: '/login',
     failureFlash: true
 }));
@@ -377,12 +395,13 @@ app.post("/kalp-krizi-test", async (req, res) => {
                 }
             });
         }
-        res.render('kalp-krizi-test', { output: cleanOutput });
+        res.json({ output: cleanOutput });
     } catch (error) {
         console.error('Error running Python script:', error);
         res.status(500).send('An error occurred');
     }
 });
+
 
 const runPythonScriptHeart = (rangeInputHeart) => {
     return new Promise((resolve, reject) => {
@@ -448,12 +467,13 @@ app.post("/akciger-kanseri-testi", async (req, res) => {
             });
         }
 
-        res.render('akciger-kanseri-testi', { output: cleanOutput });
+        res.json({ output: cleanOutput });
     } catch (error) {
         console.error('Error running Python script:', error);
         res.status(500).send('An error occurred');
     }
 });
+
 
 // Python scriptini çalıştıran fonksiyon
 const runPythonScript = (rangeInput) => {

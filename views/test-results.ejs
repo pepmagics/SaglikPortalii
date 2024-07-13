@@ -135,9 +135,9 @@
                 };
         
                 const lungCancerResultLabels = {
-                    0: { label: "Düşük Risk", class: "bg-success" },
-                    1: { label: "Orta Risk", class: "bg-warning" },
-                    2: { label: "Yüksek Risk", class: "bg-danger" }
+                    1: { label: "Düşük Risk", class: "bg-success" },
+                    2: { label: "Orta Risk", class: "bg-warning" },
+                    3: { label: "Yüksek Risk", class: "bg-danger" }
                 };
         
                 const getResultLabel = (testName, result) => {
@@ -154,7 +154,7 @@
                     const result = getResultLabel(test.testName, test.results.result);
                 %>
                     <div class="text-center border border-primary rounded mb-3 p-3" style="cursor: pointer; transition: background-color 0.3s;" onclick="location.href='/test-details/<%= test._id %>'">
-                      <h5 class="mb-1"><%= test.testName %> - <%= new Date(test.date).toLocaleDateString() %></h5>
+                      <h5 class="mb-1"><%= test.testName %> - <%= new Date(test.date).toLocaleDateString('tr-TR') %></h5>
                       <p class="mb-0">Sonuç: <span class="badge <%= result.class %>"> <%= result.label %></span></p>
                     </div>
                 <% }) %>

@@ -111,13 +111,13 @@
         <div class="row justify-content-center align-items-center">
           <div class="col-md-8 col-sm-5 col-xs-2">
             <div class="container mt-5">
-              <h1>Exercise Finder</h1>
+              <h1>Egzersiz Bulucu</h1>
               <form action="/exercise-finder" method="get" class="mb-4">
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label for="kategori" class="form-label">Category:</label>
+                    <label for="kategori" class="form-label">Kategori:</label>
                     <select name="kategori" id="kategori" class="form-select">
-                      <option value="">All</option>
+                      <option value="">Hepsi</option>
                       <option value="kol">Kol</option>
                       <option value="omuz">Omuz</option>
                       <option value="gögüs">Göğüs</option>
@@ -127,16 +127,16 @@
                     </select>
                   </div>
                   <div class="col-md-6">
-                    <label for="tur" class="form-label">Type:</label>
+                    <label for="tur" class="form-label">Tür:</label>
                     <select name="tur" id="tur" class="form-select">
-                      <option value="">All</option>
+                      <option value="">Hepsi</option>
                       <option value="push">Push</option>
                       <option value="pull">Pull</option>
-                      <option value="other">Other</option>
+                      <option value="other">Diğer</option>
                     </select>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Find Exercises</button>
+                <button type="submit" class="btn btn-primary">Egzersiz Bul</button>
               </form>
 
               <div class="row">
@@ -146,7 +146,6 @@
                     <img src="<%= exercise.imageUrl %>" class="card-img-top exercise-img" alt="<%= exercise.name %>">
                     <div class="card-body">
                       <h5 class="card-title"><%= exercise.name %></h5>
-                      <p class="card-text"><%= exercise.description %></p>
                     </div>
                   </div>
                 </div>

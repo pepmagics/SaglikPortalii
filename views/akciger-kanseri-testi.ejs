@@ -86,21 +86,8 @@
         <div class="row justify-content-center align-items-center">
           <div class="col-md-5 col-sm-5 col-xs-2">
             <div class="container mt-5">
-              <% if (output === 1) { %>
-                <div class="alert alert-light mt-3" role="alert" style="z-index: -1;">
-                  <h2>Düşük</h2>
-                </div>
-              <% } else if (output === 2) { %>
-                <div class="alert alert-info mt-3" role="alert" style="z-index: -1;">
-                  <h2>Orta</h2>
-                </div>
-              <% } else if (output === 3) { %>
-                <div class="alert alert-danger mt-3" role="alert" style="z-index: -1;">
-                  <h2>Yüksek</h2>
-                </div>
-              <% } %>
               <h3 class="text-center">Akciğer Kanseri Testi</h3>
-              <form action="/akciger-kanseri-testi" method="post">
+              <form id="cancer-test-form">
                 <div class="mb-3">
                   <label for="age" class="form-label">Yaşınız:</label>
                   <input type="range" class="form-range" name="age" id="age" min="0" max="100" value="50">
@@ -233,13 +220,29 @@
                   <span class="range-value">0</span>
                 </div>
 
-                <div class="mb-3">
-                  <label for="saveResults" class="form-label">Sonuçları kaydetmek istiyor musunuz?</label>
-                  <input type="checkbox" name="saveResults" id="saveResults">
-                </div>
-
                 <button type="submit" class="btn btn-primary">Gönder</button>
               </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bootstrap Modal -->
+      <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="resultModalLabel">Test Sonucu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert" id="resultAlert" role="alert">
+                <h2 id="resultText"></h2>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+              <button type="button" class="btn btn-primary" id="saveResultsButton">Kaydet</button>
             </div>
           </div>
         </div>
@@ -256,6 +259,67 @@
         document.getElementById('gender').addEventListener('input', function() {
           var gender = (this.value === '1') ? 'Erkek' : 'Kadın';
           document.getElementById('genderLabel').textContent = gender;
+        });
+
+        const form = document.getElementById('cancer-test-form');
+        form.addEventListener('submit', async function(event) {
+          event.preventDefault();
+          
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          try {
+            const response = await fetch('/akciger-kanseri-testi', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            });
+            const result = await response.json();
+
+            let resultText = '';
+            let alertClass = '';
+            if (result.output === 1) {
+              resultText = 'Düşük';
+              alertClass = 'alert-light';
+            } else if (result.output === 2) {
+              resultText = 'Orta';
+              alertClass = 'alert-info';
+            } else if (result.output === 3) {
+              resultText = 'Yüksek';
+              alertClass = 'alert-danger';
+            }
+            document.getElementById('resultText').textContent = resultText;
+            document.getElementById('resultAlert').className = `alert ${alertClass}`;
+            const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+            resultModal.show();
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        });
+
+        document.getElementById('saveResultsButton').addEventListener('click', async function() {
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+          data.saveResults = 'on';
+
+          try {
+            const response = await fetch('/akciger-kanseri-testi', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            alert('Sonuçlar kaydedildi!');
+            const resultModal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
+            resultModal.hide();
+          } catch (error) {
+            console.error('Error:', error);
+          }
         });
       </script>
 </body>

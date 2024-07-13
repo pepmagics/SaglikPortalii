@@ -73,7 +73,7 @@
 </head>
 
 <body>
-  <nav class="navbar flex phoneNavbar ">
+  <nav class="navbar flex phoneNavbar">
     <div class="container-fluid">
     </div>
   </nav>
@@ -86,121 +86,127 @@
         <div class="row justify-content-center align-items-center">
           <div class="col-md-5 col-sm-5 col-xs-2">
             <div class="container mt-5">
-              <% if (output === 0) { %>
-                <div class="alert alert-light mt-3" role="alert" style="z-index: -1;">
-                  <h2>Düşük</h2>
-                </div>
-              <% } else if (output === 1) { %>
-                <div class="alert alert-danger mt-3" role="alert" style="z-index: -1;">
-                  <h2>Yüksek</h2>
-                </div>
-              <% } %>
               <h3 class="text-center">Kalp Krizi Testi</h3>
-<form action="/kalp-krizi-test" method="post">
-    <div class="mb-3">
-        <label for="age" class="form-label">Yaşınız:</label>
-        <input type="range" class="form-range" name="age" id="age" min="25" max="90" value="40">
-        <span class="range-value">50</span>
-    </div>
+              <form id="heart-attack-test-form">
+                <div class="mb-3">
+                  <label for="age" class="form-label">Yaşınız:</label>
+                  <input type="range" class="form-range" name="age" id="age" min="0" max="100" value="50">
+                  <span class="range-value">50</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="gender" class="form-label">Cinsiyet Seçimi:</label>
-        <input type="range" class="form-range" name="gender" id="gender" min="0" max="1" value="0">
-        <span id="genderLabel" class="range-value">Erkek</span>
-    </div>
+                <div class="mb-3">
+                  <label for="gender" class="form-label">Cinsiyet Seçimi:</label>
+                  <input type="range" class="form-range" name="gender" id="gender" min="1" max="2" value="1">
+                  <span id="genderLabel" class="range-value">Erkek</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="diabetes" class="form-label">Diabetes:</label>
-        <input type="range" class="form-range" name="diabetes" id="diabetes" min="0" max="1" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="diabetes" class="form-label">Diabetiniz var mı?</label>
+                  <input type="range" class="form-range" name="diabetes" id="diabetes" min="0" max="1" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="familyHistory" class="form-label">Aile Geçmişi:</label>
-        <input type="range" class="form-range" name="familyHistory" id="familyHistory" min="0" max="1" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="familyHistory" class="form-label">Aile geçmişinde kalp krizi var mı?</label>
+                  <input type="range" class="form-range" name="familyHistory" id="familyHistory" min="0" max="1" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="smoking" class="form-label">Sigara Kullanımı:</label>
-        <input type="range" class="form-range" name="smoking" id="smoking" min="0" max="1" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="smoking" class="form-label">Sigara kullanımı:</label>
+                  <input type="range" class="form-range" name="smoking" id="smoking" min="0" max="1" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="obesity" class="form-label">Obezite:</label>
-        <input type="range" class="form-range" name="obesity" id="obesity" min="0" max="1" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="obesity" class="form-label">Obezite düzeyi:</label>
+                  <input type="range" class="form-range" name="obesity" id="obesity" min="0" max="1" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="alcoholConsumption" class="form-label">Alkol Tüketimi:</label>
-        <input type="range" class="form-range" name="alcoholConsumption" id="alcoholConsumption" min="0" max="1" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="alcoholConsumption" class="form-label">Alkol tüketimi:</label>
+                  <input type="range" class="form-range" name="alcoholConsumption" id="alcoholConsumption" min="0" max="1" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="exerciseHoursPerWeek" class="form-label">Haftalık Egzersiz Saati:</label>
-        <input type="range" class="form-range" name="exerciseHoursPerWeek" id="exerciseHoursPerWeek" min="0" max="20" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="exerciseHoursPerWeek" class="form-label">Haftalık egzersiz saati:</label>
+                  <input type="range" class="form-range" name="exerciseHoursPerWeek" id="exerciseHoursPerWeek" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-      <label for="diet" class="form-label">Diyet:</label>
-      <input type="range" class="form-range" name="diet" id="diet" min="0" max="2" value="1">
-      <span id="dietLabel" class="range-value">Average</span>
-  </div>
+                <div class="mb-3">
+                  <label for="diet" class="form-label">Beslenme düzeni:</label>
+                  <input type="range" class="form-range" name="diet" id="diet" min="0" max="1" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="previousHeartProblems" class="form-label">Önceki Kalp Problemleri:</label>
-        <input type="range" class="form-range" name="previousHeartProblems" id="previousHeartProblems" min="0" max="1" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="previousHeartProblems" class="form-label">Önceki kalp problemleri:</label>
+                  <input type="range" class="form-range" name="previousHeartProblems" id="previousHeartProblems" min="0" max="1" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="medicationUse" class="form-label">İlaç Kullanımı:</label>
-        <input type="range" class="form-range" name="medicationUse" id="medicationUse" min="0" max="1" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="medicationUse" class="form-label">İlaç kullanımı:</label>
+                  <input type="range" class="form-range" name="medicationUse" id="medicationUse" min="0" max="1" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="stressLevel" class="form-label">Stres Seviyesi:</label>
-        <input type="range" class="form-range" name="stressLevel" id="stressLevel" min="0" max="9" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="stressLevel" class="form-label">Stres düzeyi:</label>
+                  <input type="range" class="form-range" name="stressLevel" id="stressLevel" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="sedentaryHoursPerDay" class="form-label">Günlük Hareketsiz Saat:</label>
-        <input type="range" class="form-range" name="sedentaryHoursPerDay" id="sedentaryHoursPerDay" min="0" max="12" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="sedentaryHoursPerDay" class="form-label">Günlük hareketsiz saat:</label>
+                  <input type="range" class="form-range" name="sedentaryHoursPerDay" id="sedentaryHoursPerDay" min="0" max="24" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="bmi" class="form-label">BMI:</label>
-        <input type="range" class="form-range" name="bmi" id="bmi" min="10" max="50" value="25">
-        <span class="range-value">25</span>
-    </div>
+                <div class="mb-3">
+                  <label for="bmi" class="form-label">Beden kitle indeksi (BMI):</label>
+                  <input type="range" class="form-range" name="bmi" id="bmi" min="0" max="50" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="physicalActivityDaysPerWeek" class="form-label">Haftalık Fiziksel Aktivite Gün Sayısı:</label>
-        <input type="range" class="form-range" name="physicalActivityDaysPerWeek" id="physicalActivityDaysPerWeek" min="0" max="7" value="0">
-        <span class="range-value">0</span>
-    </div>
+                <div class="mb-3">
+                  <label for="physicalActivityDaysPerWeek" class="form-label">Haftalık fiziksel aktivite gün sayısı:</label>
+                  <input type="range" class="form-range" name="physicalActivityDaysPerWeek" id="physicalActivityDaysPerWeek" min="0" max="7" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <div class="mb-3">
-        <label for="sleepHoursPerDay" class="form-label">Günlük Uyku Saati:</label>
-        <input type="range" class="form-range" name="sleepHoursPerDay" id="sleepHoursPerDay" min="4" max="10" value="8">
-        <span class="range-value">8</span>
-    </div>
-    
-    <div class="mb-3">
-      <label for="saveResults" class="form-label">Sonuçları kaydetmek istiyor musunuz?</label>
-      <input type="checkbox" name="saveResults" id="saveResults">
-  </div>
+                <div class="mb-3">
+                  <label for="sleepHoursPerDay" class="form-label">Günlük uyku saati:</label>
+                  <input type="range" class="form-range" name="sleepHoursPerDay" id="sleepHoursPerDay" min="0" max="24" value="0">
+                  <span class="range-value">0</span>
+                </div>
 
-    <button type="submit" class="btn btn-primary">Tahmin Et</button>
-</form>
+                <button type="submit" class="btn btn-primary">Gönder</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Bootstrap Modal -->
+      <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="resultModalLabel">Test Sonucu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert" id="resultAlert" role="alert">
+                <h2 id="resultText"></h2>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+              <button type="button" class="btn btn-primary" id="saveResultsButton">Kaydet</button>
             </div>
           </div>
         </div>
@@ -215,25 +221,67 @@
         });
 
         document.getElementById('gender').addEventListener('input', function() {
-          var gender = (this.value === '0') ? 'Erkek' : 'Kadın';
+          var gender = (this.value === '1') ? 'Erkek' : 'Kadın';
           document.getElementById('genderLabel').textContent = gender;
         });
 
-        document.getElementById('diet').addEventListener('input', function() {
-    var diet;
-    switch (this.value) {
-        case '0':
-            diet = 'Unhealthy';
-            break;
-        case '1':
-            diet = 'Average';
-            break;
-        case '2':
-            diet = 'Healthy';
-            break;
-    }
-    document.getElementById('dietLabel').textContent = diet;
-});
+        const form = document.getElementById('heart-attack-test-form');
+        form.addEventListener('submit', async function(event) {
+          event.preventDefault();
+          
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          try {
+            const response = await fetch('/kalp-krizi-test', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            });
+            const result = await response.json();
+
+            let resultText = '';
+            let alertClass = '';
+            if (result.output === 0) {
+              resultText = 'Düşük';
+              alertClass = 'alert-light';
+            } else if (result.output === 1) {
+              resultText = 'Yüksek';
+              alertClass = 'alert-danger';
+            }
+            document.getElementById('resultText').textContent = resultText;
+            document.getElementById('resultAlert').className = `alert ${alertClass}`;
+            const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+            resultModal.show();
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        });
+
+        document.getElementById('saveResultsButton').addEventListener('click', async function() {
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+          data.saveResults = 'on';
+
+          try {
+            const response = await fetch('/kalp-krizi-test', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            alert('Sonuçlar kaydedildi!');
+            const resultModal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
+            resultModal.hide();
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        });
       </script>
 </body>
 

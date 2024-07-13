@@ -1,54 +1,5 @@
 const foods = [
-    {
-        name: 'Tavuk Göğsü',
-        description: 'Yağsız protein kaynağı.',
-        imageUrl: 'https://www.diyetkolik.com/site_media/media/2023/04/05/tavukgogsu.jpg',
-        kategori: 'protein',
-        kalori: 165,
-        protein: 31,
-        karbonhidrat: 0,
-        yag: 3.6
-    },
-    {
-        name: 'Pide',
-        description: 'Üzerine çeşitli malzemeler eklenerek yapılan Türk ekmeği.',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVPs-qk0hcg61LqVDD7XOmUGFgjaUxeAhnZw&s',
-        kategori: 'tahıl',
-        kalori: 250,
-        protein: 10,
-        karbonhidrat: 45,
-        yag: 8
-    },
-    {
-        name: 'Döner',
-        description: 'Dikey bir şişte pişirilen ince dilimlenmiş et yemeği.',
-        imageUrl: 'https://media1.tenor.com/m/d7cbqVhtN5EAAAAd/gyros-shawarma.gif', 
-        kategori: 'protein',
-        kalori: 300,
-        protein: 20,
-        karbonhidrat: 5,
-        yag: 22
-    },
-    {
-        name: 'Etli Nohut',
-        description: 'Nohut ve et ile yapılan sulu yemek.',
-        imageUrl: 'https://www.ardaninmutfagi.com/wp-content/uploads/2019/09/etli-nohut-yemegi-i.jpg',
-        kategori: 'protein',
-        kalori: 200,
-        protein: 15,
-        karbonhidrat: 20,
-        yag: 6
-    },
-    {
-        name: 'Çılbır',
-        description: 'Yoğurt ve tereyağlı sos ile servis edilen haşlanmış yumurta.',
-        imageUrl: 'https://image.hurimg.com/i/hurriyet/75/750x422/5ea009312269a218ac53a1a2.jpg',
-        kategori: 'protein',
-        kalori: 150,
-        protein: 8,
-        karbonhidrat: 5,
-        yag: 10
-    },
+    
     {
       name: 'Kabak Mücveri',
       description: 'Rendelenmiş kabak ve un ile yapılan kızartılmış sebze köftesi.',

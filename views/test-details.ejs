@@ -111,7 +111,7 @@
       <div class="col-md-8 offset-md-1 test-details-container">
         <div class="test-details">
           <h2><%= testResult.testName %> Detayları</h2>
-          <p>Tarih: <%= new Date(testResult.date).toLocaleDateString() %></p>
+          <p>Tarih: <%= new Date(testResult.date).toLocaleDateString('tr-TR') %></p>
 
           <% 
             const heartAttackResultLabels = {
@@ -120,9 +120,9 @@
             };
 
             const lungCancerResultLabels = {
-              0: { label: "Düşük Risk", class: "bg-success" },
-              1: { label: "Orta Risk", class: "bg-warning" },
-              2: { label: "Yüksek Risk", class: "bg-danger" }
+              1: { label: "Düşük Risk", class: "bg-success" },
+              2: { label: "Orta Risk", class: "bg-warning" },
+              3: { label: "Yüksek Risk", class: "bg-danger" }
             };
 
             const getResultLabel = (testName, result) => {
